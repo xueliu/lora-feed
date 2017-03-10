@@ -3,11 +3,12 @@ Semtech packages for OpenWRT/LEDE
 
 ## Table of Contents
 
+- [Patch](#patch)
 - [Install](#install)
 - [Contribute](#contribute)
 - [License](#license)
 
-## Patch toolchain
+## Patch
 packet-forwarder requires function qsort_r which is not avaiable in neither musl library 1.1.15 nor 1.1.16.
 We need [patch](https://github.com/xueliu/lora-feed/blob/master/101-added_qsort_r.patch) the toolchain to support qsort_r.
 
