@@ -1,5 +1,6 @@
 # lora-feed
-Semtech packages for OpenWRT/LEDE
+Semtech packages for OpenWRT/LEDE.
+This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-lora)
 
 ## Table of Contents
 
