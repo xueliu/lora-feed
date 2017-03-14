@@ -16,7 +16,6 @@ PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/Lora-net/packet_forwarder/archive/
 PKG_MD5SUM:=774873913ebd097972bf1a6963564d48
 
-include $(INCLUDE_DIR)/host-build.mk
 include $(INCLUDE_DIR)/package.mk
 
 define Package/packet-forwarder/Default
@@ -40,7 +39,7 @@ endef
 CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm
 
 define Build/Compile
-	$(MAKE) CROSS_COMPILE=$(REAL_GNU_TARGET_NAME)- LGW_PATH=$(BUILD_DIR)/lora_gateway-4.1.3/libloragw -C $(PKG_BUILD_DIR)
+	$(MAKE) CC=$(TARGET_CC) LGW_PATH=$(BUILD_DIR)/lora_gateway-4.1.3/libloragw -C $(PKG_BUILD_DIR)
 endef
 
 define Package/packet-forwarder/install
