@@ -15,6 +15,8 @@ We need [patch](https://github.com/xueliu/lora-feed/blob/master/101-added_qsort_
     $ cp 101-added_qsort_r.patch $SOURCE_TREE/toolchain/musl/patches
     $ make toolchain/clean
     $ make toolchain/compile
+    $ make toolchain/install
+Note: Please make sure that the musl library is updated in the file system.
 
 ## Install
 
