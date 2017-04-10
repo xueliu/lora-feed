@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lora_gateway
-PKG_VERSION:=4.1.3
+PKG_VERSION:=5.0.1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/Lora-net/lora_gateway/archive/
-PKG_MD5SUM:=54064aab8fd23c3810221bfb7744594b
+PKG_MD5SUM:=5d07f8471e1a67920787e3879afe0cb6
 
 include $(INCLUDE_DIR)/package.mk
 
