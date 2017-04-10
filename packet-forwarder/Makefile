@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=packet-forwarder
-PKG_VERSION:=3.1.0
+PKG_VERSION:=4.0.1
 PKG_RELEASE:=1
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/packet_forwarder-$(PKG_VERSION)
 PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://github.com/Lora-net/packet_forwarder/archive/
-PKG_MD5SUM:=774873913ebd097972bf1a6963564d48
+PKG_MD5SUM:=a1f942e0cc7b02d604b11c8cb5f2a029
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -39,7 +39,7 @@ endef
 CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm
 
 define Build/Compile
-	$(MAKE) CC=$(TARGET_CC) LGW_PATH=$(BUILD_DIR)/lora_gateway-4.1.3/libloragw -C $(PKG_BUILD_DIR)
+	$(MAKE) CC=$(TARGET_CC) LGW_PATH=$(BUILD_DIR)/lora_gateway-5.0.1/libloragw -C $(PKG_BUILD_DIR)
 endef
 
 define Package/packet-forwarder/install
