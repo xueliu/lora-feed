@@ -24,8 +24,8 @@ endef
 
 define Package/lora-gateway
 $(call Package/lora-gateway/Default)
-  SECTION:=utils
-  CATEGORY:=Utilities
+  SECTION:=libs
+  CATEGORY:=Libraries
 endef
 
 define Package/lora-gateway/description
