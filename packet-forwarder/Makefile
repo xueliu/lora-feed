@@ -51,6 +51,8 @@ define Package/packet-forwarder/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_DATA) ./files/lora_global $(1)/etc/config
 	$(INSTALL_DIR) $(1)/etc/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/global_conf.json $(1)/etc
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/local_conf.json $(1)/etc
