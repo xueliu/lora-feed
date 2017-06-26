@@ -49,6 +49,10 @@ define Package/packet-forwarder/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_ack/util_ack $(1)/root/packet_forwarder
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_sink/util_sink $(1)/root/packet_forwarder
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
+
+	$(INSTALL_DIR) $(1)/etc/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/global_conf.json $(1)/etc
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/local_conf.json $(1)/etc
 endef
 
 $(eval $(call BuildPackage,packet-forwarder))
