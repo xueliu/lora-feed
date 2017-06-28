@@ -27,7 +27,7 @@ define Package/packet-forwarder
 $(call Package/packet-forwarder/Default)
   SECTION:=utils
   CATEGORY:=Utilities
-  DEPENDS:=+lora-gateway
+  DEPENDS:=+libloragw
 endef
 
 define Package/packet-forwarder/description
@@ -52,7 +52,7 @@ define Package/packet-forwarder/install
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
 	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DATA) ./files/lora_global $(1)/etc/config
+	$(INSTALL_DATA) ./files/lora-global.config $(1)/etc/config/lora-global
 	$(INSTALL_DIR) $(1)/etc/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/global_conf.json $(1)/etc
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/local_conf.json $(1)/etc
