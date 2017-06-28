@@ -55,13 +55,18 @@ define Package/lora-gateway-utils
   DEPENDS:=+libloragw
 endef
 
-TARGET_CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm -DSPI_DEV_PATH=$(CONFIG_SPI_DEVICE)
+TARGET_CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm -DSPI_DEV_PATH='\"/dev/spidev0.2\"'
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libloragw
 	$(CP) $(PKG_BUILD_DIR)/libloragw/inc/* $(1)/usr/include/libloragw
 	$(INSTALL_DIR) $(1)/usr/lib
 	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
+endef
+
+define Package/libloragw/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
 endef
 
 define Package/lora-gateway-tests/install

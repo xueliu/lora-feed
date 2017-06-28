@@ -2,14 +2,12 @@ Index: lora_gateway-5.0.1/libloragw/src/loragw_spi.native.c
 ===================================================================
 --- lora_gateway-5.0.1.orig/libloragw/src/loragw_spi.native.c
 +++ lora_gateway-5.0.1/libloragw/src/loragw_spi.native.c
-@@ -54,7 +54,11 @@ Maintainer: Sylvain Miermont
+@@ -54,7 +54,9 @@ Maintainer: Sylvain Miermont
  #define READ_ACCESS     0x00
  #define WRITE_ACCESS    0x80
  #define SPI_SPEED       8000000
 +#ifndef SPI_DEV_PATH
  #define SPI_DEV_PATH    "/dev/spidev0.0"
-+#else
-+#define SPI_DEV_PATH	"""#SPI_DEV_PATH#"""
 +#endif
  //#define SPI_DEV_PATH    "/dev/spidev32766.0"
  
