@@ -32,12 +32,13 @@ Update your build environment and install the package:
     $ scripts/feeds install lora
     $ make menuconfig
 
-Go to Utilities, select lora-gateway and packet-forwarder;
+Go to Libraries Network, select libloragw, input the SPI device path you will use in your dev board;  
+Go to Nework-->LoRaWAN, select packet-forwarder and other programs you want;  
+Go to LuCI-->Applications, select luci-app-pkt-fwd;  
 
 Exit, save and build
 
-    $ make package/lora-gateway/install
-    $ make package/packet-forwarder/install
+    $ make -j4
 
 Following two packages are only working on Raspberry Pi
  
