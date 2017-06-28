@@ -20,13 +20,14 @@ include $(INCLUDE_DIR)/package.mk
 
 define Package/packet-forwarder/Default
   TITLE:=Semtech packet-forwarder program
-  URL:=http://www.semtech.com/wireless-rf/lora.html
+  URL:=https://github.com/Lora-net/packet_forwarder
 endef
 
 define Package/packet-forwarder
 $(call Package/packet-forwarder/Default)
-  SECTION:=utils
-  CATEGORY:=Utilities
+  SECTION:=net
+  CATEGORY:=Network
+  SUBMENU:=LoRaWAN
   DEPENDS:=+libloragw
 endef
 
@@ -34,6 +35,14 @@ define Package/packet-forwarder/description
   A LoRa packet forwarder is a program running on the host of a LoRa gateway
   that forwards RF packets receive by the concentrator to a server through a
   IP/UDP link, and emits RF packets that are sent by the server.
+endef
+
+define Package/packet-forwarder-utils
+  SECTION:=net
+  CATEGORY:=Network
+  SUBMENU:=LoRaWAN
+  TITLE:=Utilities for lora pakcet forwarder
+  DEPENDS:=+libloragw +packet-forwarder
 endef
 
 CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm
@@ -45,10 +54,6 @@ endef
 define Package/packet-forwarder/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/lora_pkt_fwd $(1)/usr/bin
-	$(INSTALL_DIR) $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_ack/util_ack $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_sink/util_sink $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
 	$(INSTALL_DIR) $(1)/etc/config
@@ -56,6 +61,13 @@ define Package/packet-forwarder/install
 	$(INSTALL_DIR) $(1)/etc/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/global_conf.json $(1)/etc
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/local_conf.json $(1)/etc
+endef
+
+define Package/packet-forwarder-utils/install
+	$(INSTALL_DIR) $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_ack/util_ack $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_sink/util_sink $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
 endef
 
 define Package/packet-forwarder/postinst
@@ -69,3 +81,4 @@ exit 0
 endef
 
 $(eval $(call BuildPackage,packet-forwarder))
+$(eval $(call BuildPackage,packet-forwarder-utils))
