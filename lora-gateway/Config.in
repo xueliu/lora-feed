@@ -1,0 +1,10 @@
+# libloragw configuration
+
+if PACKAGE_libloragw
+
+config SPI_DEVICE
+	string "SPI Device"
+	default /dev/spidev0.0
+
+endif
+
