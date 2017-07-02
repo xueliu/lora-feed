@@ -5,9 +5,31 @@ STOP=10
 USE_PROCD=1
 
 PROG=/usr/bin/lora_pkt_fwd
+RESET=27
+
+reset_ic880a ()
+{
+	logger "Resetting iC880A"
+	if [ -d "/sys/class/gpio/gpio${RESET}" ]
+	then
+		echo 1 > /dev/null
+	else
+		echo ${RESET} > /sys/class/gpio/export
+		echo "out" > /sys/class/gpio/gpio${RESET}/direction
+	fi
+	echo "1" > /sys/class/gpio/gpio${RESET}/value
+	sleep 5
+	echo "0" > /sys/class/gpio/gpio${RESET}/value
+	sleep 1
+	echo "0" > /sys/class/gpio/gpio${RESET}/value
+
+	logger "iC880A reset completed"
+}
 
 start_service()
 {
+	reset_ic880a
+
 	procd_open_instance
 
 	procd_set_param command $PROG
