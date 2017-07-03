@@ -5,7 +5,7 @@ STOP=10
 USE_PROCD=1
 
 PROG=/usr/bin/lora_pkt_fwd
-RESET=27
+RESET=21
 
 reset_ic880a ()
 {
