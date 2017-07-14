@@ -119,14 +119,15 @@ end
 --
 if lora_global_table["gateway_conf"] then
 	for k, v in pairs(lora_global_table["gateway_conf"]) do
+		-- filter out internal uci options
 		if string.match(k, '%.[%a]*', 1) == nil then
 			if tonumber(v) then
 				gateway_conf[k] = tonumber(v)
 			elseif v == "true" then
-        gateway_conf[k] = true
-      elseif v == "false" then
-        gateway_conf[k] = false
-      else
+				gateway_conf[k] = true
+			elseif v == "false" then
+        		gateway_conf[k] = false
+			else
 				gateway_conf[k] = v
 			end
 		end

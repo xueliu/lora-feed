@@ -9,8 +9,8 @@ gateway.anonymous=true
 
 gateway:tab("general",  translate("General Settings"))
 gateway:tab("forward",  translate("Forward Rules"))
-gateway:tab("gps", translate("GPS Configuration"))
-gateway:tab("beacon", translate("Beacon Configuration"))
+gateway:tab("gps", translate("GPS Settings"))
+gateway:tab("beacon", translate("Beacon Settings"))
 
 gateway:taboption("general", Value,"gateway_ID",translate("Gateway ID"))
 gateway:taboption("general", Value,"server_address",translate("Server Address"))
@@ -53,15 +53,6 @@ forward_crc_disabled:value(true, translate("True"))
 forward_crc_disabled:value(false, translate("False"))
 
 --
--- TTY path for GPS
---
-gps_tty_path = gateway:taboption("gps", Value,"gps_tty_path",translate("TTY path for GPS"))
-gps_tty_path.optional = true;
-gps_tty_path.rmempty = true;
-gps_tty_path.default = false
-gps_tty_path.datatype = "string"
-
---
 -- GPS Enable
 --
 gps_enable = gateway:taboption("gps", ListValue,"gps_enable",translate("GPS Enable"))
@@ -71,6 +62,16 @@ gps_enable.default = false
 gps_enable.datatype = "bool"
 gps_enable:value(true, translate("True"))
 gps_enable:value(false, translate("False"))
+
+--
+-- TTY path for GPS
+--
+gps_tty_path = gateway:taboption("gps", Value,"gps_tty_path",translate("TTY path for GPS"))
+gps_tty_path.optional = true;
+gps_tty_path.rmempty = true;
+gps_tty_path.default = false
+gps_tty_path.datatype = "string"
+gps_tty_path:depends("gps_enable", "true")
 
 --
 -- GPS reference coordinates: latitude
