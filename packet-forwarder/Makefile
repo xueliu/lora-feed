@@ -54,6 +54,7 @@ endef
 define Package/packet-forwarder/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/lora_pkt_fwd $(1)/usr/bin
+	$(INSTALL_BIN) ./files/gen_lora_global_conf $(1)/usr/sbin
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
 	$(INSTALL_DIR) $(1)/etc/config
