@@ -279,7 +279,7 @@ freq.rmempty = false;
 --
 -- RSSI offset
 -- 
-rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"))
+rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"), "dB")
 rssi_offset.optional = false;
 rssi_offset.rmempty = false;
 
@@ -299,12 +299,12 @@ tx_notch_freq.optional = false;
 tx_notch_freq.rmempty = true;
 tx_notch_freq:depends("tx_enable", "true")
 
-tx_freq_min= radio:option(Value,"tx_freq_min",translate("Minimum Tx Frequency"))
+tx_freq_min= radio:option(Value,"tx_freq_min",translate("Minimum Tx Frequency"), "Hz")
 tx_freq_min.optional = false;
 tx_freq_min.rmempty = true;
 tx_freq_min:depends("tx_enable", "true")
 
-tx_freq_max= radio:option(Value,"tx_freq_max",translate("Maximum Tx Frequency"))
+tx_freq_max= radio:option(Value,"tx_freq_max",translate("Maximum Tx Frequency"), "Hz")
 tx_freq_max.optional = false;
 tx_freq_max.rmempty = true;
 tx_freq_max:depends("tx_enable", "true")
@@ -332,7 +332,7 @@ radio = chan:option(Value,"radio",translate("Radio"))
 radio.optional = false;
 radio.rmempty = false;
 
-interface = chan:option(Value,"if",translate("IF"))
+interface = chan:option(Value,"if",translate("IF"), "Hz")
 interface.optional = false;
 interface.rmempty = false;
 
@@ -349,7 +349,7 @@ datarate.optional = true;
 datarate.rmempty = false;
 
 --
--- tx_lut
+-- TX gain tables
 --
 lut=m:section(TypedSection,"lut","Tx LUT Parameters")
 lut.addremove=true
