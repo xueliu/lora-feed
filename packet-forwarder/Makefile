@@ -68,15 +68,5 @@ define Package/packet-forwarder-utils/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
 endef
 
-define Package/packet-forwarder/postinst
-#!/bin/sh
-
-if [ -z "$${IPKG_INSTROOT}" ]; then
-        echo "Enabling lora_pkt_fwd"
-        /etc/init.d/lora_pkt_fwd enable
-fi
-exit 0
-endef
-
 $(eval $(call BuildPackage,packet-forwarder))
 $(eval $(call BuildPackage,packet-forwarder-utils))
