@@ -5,30 +5,31 @@ STOP=10
 USE_PROCD=1
 
 PROG=/usr/bin/lora_pkt_fwd
-RESET=21
 
-reset_ic880a ()
+reset_sx1301_board ()
 {
-	logger "Resetting iC880A"
-	if [ -d "/sys/class/gpio/gpio${RESET}" ]
+	local pin=$1
+
+	if [ -d "/sys/class/gpio/gpio${pin}" ]
 	then
 		echo 1 > /dev/null
 	else
-		echo ${RESET} > /sys/class/gpio/export
-		echo "out" > /sys/class/gpio/gpio${RESET}/direction
+		echo ${pin} > /sys/class/gpio/export
+		echo "out" > /sys/class/gpio/gpio${pin}/direction
 	fi
-	echo "1" > /sys/class/gpio/gpio${RESET}/value
-	sleep 5
-	echo "0" > /sys/class/gpio/gpio${RESET}/value
-	sleep 1
-	echo "0" > /sys/class/gpio/gpio${RESET}/value
 
-	echo "iC880A reset completed"
+	echo "1" > /sys/class/gpio/gpio${pin}/value
+	sleep 5
+	echo "0" > /sys/class/gpio/gpio${pin}/value
+	sleep 1
+	echo "0" > /sys/class/gpio/gpio${pin}/value
+
+	logger "SX1301 reset completed"
 }
 
 generate_global_conf()
 {
-	echo "generate /etc/global_conf.json"
+	logger "Generate /etc/global_conf.json"
 	gen_lora_global_conf > /etc/global_conf.json
 }
 
@@ -39,13 +40,19 @@ service_triggers()
 
 reload_service()
 {
-	echo "reload lora_pkg_fwd service"
+	logger "reload lora_pkg_fwd service"
 	generate_global_conf
 }
 
 start_service()
 {
-	reset_ic880a
+	local reset_enable=$(uci get lora-global.SX1301_conf.enable_reset_pin)
+	
+	if [ ${reset_enable} == 1 ]; then
+    	logger "Reset SX1301"
+    	reset_pin=$(uci get lora-global.SX1301_conf.reset_pin)
+		reset_sx1301_board $reset_pin
+	fi
 
 	generate_global_conf	
 
