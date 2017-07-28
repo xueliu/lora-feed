@@ -259,6 +259,9 @@ enable.datatype = "bool"
 enable:value(true, translate("True"))
 enable:value(false, translate("False"))
 
+--
+-- Radio RF frontend
+--
 type = radio:option(ListValue,"type",translate("Type"))
 type.optional = false;
 type.rmempty = false;
@@ -266,14 +269,23 @@ type.datatype = "string"
 type:value("SX1257", translate("SX1257"))
 type:value("SX1255", translate("SX1255"))
 
+--
+-- Radio Frequency
+--
 freq = radio:option(Value,"freq",translate("Frequency"), "Hz")
 freq.optional = false;
 freq.rmempty = false;
 
+--
+-- RSSI offset
+-- 
 rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"))
 rssi_offset.optional = false;
 rssi_offset.rmempty = false;
 
+--
+-- Tx Enable
+--
 tx_enable = radio:option(ListValue,"tx_enable",translate("Tx Enable"))
 tx_enable.optional = false;
 tx_enable.rmempty = false;
@@ -281,6 +293,11 @@ tx_enable.default = false
 tx_enable.datatype = "bool"
 tx_enable:value(true, translate("True"))
 tx_enable:value(false, translate("False"))
+
+tx_notch_freq= radio:option(Value,"tx_notch_freq",translate("Tx Notch Frequency"), "[126..250] KHz")
+tx_notch_freq.optional = false;
+tx_notch_freq.rmempty = true;
+tx_notch_freq:depends("tx_enable", "true")
 
 tx_freq_min= radio:option(Value,"tx_freq_min",translate("Minimum Tx Frequency"))
 tx_freq_min.optional = false;
@@ -335,7 +352,7 @@ datarate.rmempty = false;
 -- tx_lut
 --
 lut=m:section(TypedSection,"lut","Tx LUT Parameters")
-lut.addremove=false
+lut.addremove=true
 lut.anonymous=false
 
 pa_gain = lut:option(Value,"pa_gain",translate("PA Gain"))
