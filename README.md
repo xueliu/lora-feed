@@ -47,7 +47,7 @@ Following two packages are only working on Raspberry Pi
     $ make package/single_chan_pkt_fwd/install
 
 ## Issues
-- [ ] Reset pin is hardcoded;
+- [x] Reset pin is hardcoded;
 - [ ] No predefined parameters for different countries;
 - [ ] Can not generate global_conf.json with lbt section;
 
