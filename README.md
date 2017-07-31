@@ -30,7 +30,7 @@ Edit your feeds.conf or feed.conf.default and add the following to it:
 Update your build environment and install the package:
 
     $ scripts/feeds update lora
-    $ scripts/feeds install -p lora
+    $ scripts/feeds install -p lora
     $ make menuconfig
 
 Go to Libraries Network, select libloragw, input the SPI device path you will use in your dev board;  
