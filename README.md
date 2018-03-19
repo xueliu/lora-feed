@@ -18,7 +18,7 @@ Therefore we should [patch](https://github.com/xueliu/lora-feed/blob/master/101-
     $ make toolchain/clean
     $ make toolchain/compile
     $ make toolchain/install
-Note: Please make sure that the musl library is updated in the file system. You could reinstall libc_1.1.15-1_pistachio.ipk to update your existing system.
+Note: Please make sure that the musl library is updated in the file system. You could reinstall libc_1.1.15-1_xxxx.ipk to update your existing system.
 
 ## Install
 
@@ -33,9 +33,9 @@ Update your build environment and install the package:
     $ scripts/feeds install -p lora
     $ make menuconfig
 
-Go to Libraries Network, select libloragw, input the SPI device path you will use in your dev board;  
-Go to Nework-->LoRaWAN, select packet-forwarder and other programs you want;  
-Go to LuCI-->Applications, select luci-app-pkt-fwd;  
+Go to Libraries, select libloragw, input the SPI device path you will use in your dev board;  
+Go to Nework --> LoRaWAN, select packet-forwarder and other programs you want;  
+Go to LuCI --> Applications, select luci-app-pkt-fwd;  
 
 Exit, save and build
 
@@ -47,9 +47,9 @@ Following two packages are only working on Raspberry Pi
     $ make package/single_chan_pkt_fwd/install
 
 ## Issues
-- [x] Reset pin is hardcoded;
-- [ ] No predefined parameters for different countries;
-- [ ] Can not generate global_conf.json with lbt section;
+- [x] Reset pin is configurable;
+- [ ] Add predefined parameters for different countries;
+- [ ] Generate global_conf.json with lbt section;
 
 ## Contribute
 
