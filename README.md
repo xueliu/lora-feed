@@ -11,7 +11,7 @@ This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-l
 - [License](#license)
 
 ## Patch
-packet-forwarder requires function qsort_r which is not avaiable in neither musl library 1.1.15 nor 1.1.16.
+packet-forwarder requires function **qsort_r** which is not avaiable in musl library (current version 1.1.19).
 Therefore we should [patch](https://github.com/xueliu/lora-feed/blob/master/101-added_qsort_r.patch) the toolchain at first.
 
     $ cp 101-added_qsort_r.patch $SOURCE_TREE/toolchain/musl/patches
