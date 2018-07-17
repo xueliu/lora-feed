@@ -4,21 +4,10 @@ This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-l
 
 ## Table of Contents
 
-- [Patch](#patch)
 - [Install](#install)
 - [Issues](#issues)
 - [Contribute](#contribute)
 - [License](#license)
-
-## Patch
-packet-forwarder requires function **qsort_r** which is not avaiable in musl library (current version 1.1.19).
-Therefore we should [patch](https://github.com/xueliu/lora-feed/blob/master/101-added_qsort_r.patch) the toolchain at first.
-
-    $ cp 101-added_qsort_r.patch $SOURCE_TREE/toolchain/musl/patches
-    $ make toolchain/clean
-    $ make toolchain/compile
-    $ make toolchain/install
-Note: Please make sure that the musl library is updated in the file system. You could reinstall libc_1.1.15-1_xxxx.ipk to update your existing system.
 
 ## Install
 
