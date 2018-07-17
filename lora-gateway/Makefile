@@ -55,7 +55,9 @@ define Package/lora-gateway-utils
   DEPENDS:=+libloragw
 endef
 
-TARGET_CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm -DSPI_DEV_PATH=\\\"\"$(CONFIG_SX1301_SPI_PATH)\\\"\"
+TARGET_CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm \
+		-DSPI_SPEED=$(CONFIG_SX1301_SPI_SPEED) \
+		-DSPI_DEV_PATH=\\\"\"$(CONFIG_SX1301_SPI_PATH)\\\"\"
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libloragw

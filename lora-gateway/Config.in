@@ -6,5 +6,8 @@ config SX1301_SPI_PATH
 	string "SPI Dev Path"
 	default /dev/spidev0.0
 
-endif
+config SX1301_SPI_SPEED
+	string "SPI Speed (Hz)"
+	default 8000000
 
+endif
