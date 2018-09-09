@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2014 OpenWrt.org
+# Copyright (C) 2018 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -11,17 +11,14 @@ PKG_NAME:=lora-gateway
 PKG_VERSION:=5.0.1
 PKG_RELEASE:=1
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/lora_gateway-$(PKG_VERSION)
 PKG_SOURCE:=v$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/Lora-net/lora_gateway/archive/
+PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/lora_gateway/tar.gz/v$(PKG_VERSION)?
 PKG_MD5SUM:=5d07f8471e1a67920787e3879afe0cb6
+PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
+PKG_LICENSE_FILES:=LICENSE
+PKG_BUILD_DIR:=$(BUILD_DIR)/lora_gateway-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-
-define Package/libloragw/Default
-  TITLE:=Semtech lora-gateway package
-  URL:=http://www.semtech.com/wireless-rf/lora.html
-endef
 
 define Package/libloragw
   SECTION:=libs
@@ -32,7 +29,8 @@ define Package/libloragw
 endef
 
 define Package/libloragw/description
-  Driver/HAL library for Semtech SX1301 multi-channel modem and SX1257/SX1255 RF transceivers.
+  Driver/HAL library for Semtech SX1301 multi-channel modem and 
+  SX1257/SX1255 RF transceivers.
 endef
 
 define Package/libloragw/config
@@ -66,22 +64,19 @@ define Build/InstallDev
 	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
 endef
 
-define Package/libloragw/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
-endef
-
 define Package/lora-gateway-tests/install
-	$(INSTALL_DIR) $(1)/root/lora_gateway
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/root/lora_gateway
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/usr/sbin
 endef
 
 define Package/lora-gateway-utils/install
-	$(INSTALL_DIR) $(1)/root/lora_gateway
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_pkt_logger/util_pkt_logger $(1)/root/lora_gateway
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_continuous/util_tx_continuous $(1)/root/lora_gateway
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_spi_stress/util_spi_stress $(1)/root/lora_gateway
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/lora_gateway
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_lbt_test/util_lbt_test $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_pkt_logger/util_pkt_logger $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_spectral_scan/util_spectral_scan $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_continuous/util_tx_continuous $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_spi_stress/util_spi_stress $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/usr/sbin
 endef
 
 $(eval $(call BuildPackage,libloragw))
