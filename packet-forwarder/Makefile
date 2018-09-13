@@ -59,6 +59,8 @@ define Package/packet-forwarder/install
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DATA) ./files/lora-global.config $(1)/etc/config/lora-global
+	$(INSTALL_DIR) $(1)/usr/lib/lua
+	$(INSTALL_BIN) ./files/JSON.lua $(1)/usr/lib/lua/JSON.lua
 endef
 
 define Package/packet-forwarder-utils/install
