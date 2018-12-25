@@ -28,7 +28,7 @@ $(call Package/packet-forwarder/Default)
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  DEPENDS:=+libloragw +librt
+  DEPENDS:=+libloragw +librt +kmod-spi-dev +libubox-lua +libuci-lua
 endef
 
 define Package/packet-forwarder/description
