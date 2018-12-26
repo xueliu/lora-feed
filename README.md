@@ -2,6 +2,8 @@
 Semtech packages for OpenWRT/LEDE.
 This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-lora)
 
+![luci](luci-lora-gateway.png)
+
 ## Table of Contents
 
 - [Install](#install)
@@ -23,7 +25,7 @@ Update your build environment and install the package:
     $ make menuconfig
 
 Go to Libraries, select libloragw, input the SPI device path you will use in your dev board;  
-Go to Nework --> LoRaWAN, select packet-forwarder and other programs you want;  
+Go to Network --> LoRaWAN, select packet-forwarder and other programs you want;  
 Go to LuCI --> Applications, select luci-app-pkt-fwd;  
 
 Exit, save and build
