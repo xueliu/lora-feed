@@ -4,7 +4,7 @@ STOP=10
 
 USE_PROCD=1
 
-PROG=/usr/bin/lora_pkt_fwd
+PROG=/usr/sbin/lora_pkt_fwd
 
 reset_sx1301_board ()
 {
