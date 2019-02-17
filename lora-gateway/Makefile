@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018 OpenWrt.org
+# Copyright (C) 2019 Xue Liu <liuxuenetmail@gmail>
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -13,7 +13,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/lora_gateway/tar.gz/v$(PKG_VERSION)?
-PKG_MD5SUM:=5d07f8471e1a67920787e3879afe0cb6
+PKG_HASH:=1a0447d5e8183d08e6dce5f739f6872b9c57824b98f4078830d5ee21b15782c1
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE_FILES:=LICENSE
 PKG_BUILD_DIR:=$(BUILD_DIR)/lora_gateway-$(PKG_VERSION)
@@ -42,7 +42,7 @@ define Package/lora-gateway-tests
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Test programs for libloragw
-  DEPENDS:=+libloragw +librt
+  DEPENDS:=@libloragw
 endef
 
 define Package/lora-gateway-utils
@@ -50,10 +50,10 @@ define Package/lora-gateway-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for libloragw
-  DEPENDS:=+libloragw
+  DEPENDS:=@libloragw
 endef
 
-TARGET_CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm \
+TARGET_CFLAGS += $(FPIC) -Wall -Wextra -std=c99 -Iinc -I. -lm \
 		-DSPI_SPEED=$(CONFIG_SX1301_SPI_SPEED) \
 		-DSPI_DEV_PATH=\\\"\"$(CONFIG_SX1301_SPI_PATH)\\\"\"
 
