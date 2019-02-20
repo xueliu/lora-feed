@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=lora-gateway
+PKG_NAME:=lora-gateway-hal
 PKG_VERSION:=5.0.1
 PKG_RELEASE:=1
 
@@ -25,7 +25,6 @@ define Package/libloragw
   CATEGORY:=Libraries
   TITLE:=Driver/HAL library for Semtech SX1301
   URL:=http://www.semtech.com/wireless-rf/lora.html
-  MENU:=1
 endef
 
 define Package/libloragw/description
@@ -37,7 +36,7 @@ define Package/libloragw/config
 	source "$(SOURCE)/Config.in"
 endef
 
-define Package/lora-gateway-tests
+define Package/libloragw-tests
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
@@ -45,7 +44,7 @@ define Package/lora-gateway-tests
   DEPENDS:=@libloragw
 endef
 
-define Package/lora-gateway-utils
+define Package/libloragw-utils
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
@@ -64,12 +63,12 @@ define Build/InstallDev
 	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
 endef
 
-define Package/lora-gateway-tests/install
+define Package/libloragw-tests/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/usr/sbin
 endef
 
-define Package/lora-gateway-utils/install
+define Package/libloragw-utils/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_lbt_test/util_lbt_test $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_pkt_logger/util_pkt_logger $(1)/usr/sbin
@@ -80,5 +79,5 @@ define Package/lora-gateway-utils/install
 endef
 
 $(eval $(call BuildPackage,libloragw))
-$(eval $(call BuildPackage,lora-gateway-tests))
-$(eval $(call BuildPackage,lora-gateway-utils))
+$(eval $(call BuildPackage,libloragw-tests))
+$(eval $(call BuildPackage,libloragw-utils))
