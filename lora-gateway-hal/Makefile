@@ -11,8 +11,8 @@ PKG_NAME:=lora-gateway-hal
 PKG_VERSION:=5.0.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=v$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/lora_gateway/tar.gz/v$(PKG_VERSION)?
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_HASH:=1a0447d5e8183d08e6dce5f739f6872b9c57824b98f4078830d5ee21b15782c1
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE_FILES:=LICENSE
@@ -28,7 +28,7 @@ define Package/libloragw
 endef
 
 define Package/libloragw/description
-  Driver/HAL library for Semtech SX1301 multi-channel modem and 
+  Driver/HAL library for Semtech SX1301 multi-channel modem and
   SX1257/SX1255 RF transceivers.
 endef
 
@@ -40,7 +40,7 @@ define Package/libloragw-tests
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=Test programs for libloragw
+  TITLE:=Test programs for libloragw to check functionality
   DEPENDS:=@libloragw
 endef
 
@@ -48,7 +48,7 @@ define Package/libloragw-utils
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=Utilities for libloragw
+  TITLE:=Utility programs for libloragw
   DEPENDS:=@libloragw
 endef
 
