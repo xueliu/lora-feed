@@ -12,7 +12,25 @@ Index: packet_forwarder-4.0.1/lora_pkt_fwd/src/jitqueue.c
  #include <stdio.h>      /* printf, fprintf, snprintf, fopen, fputs */
  #include <string.h>     /* memset, memcpy */
  #include <pthread.h>
-@@ -108,15 +107,14 @@ int compare(const void *a, const void *b
+@@ -91,32 +90,27 @@ void jit_queue_init(struct jit_queue_s *
+     pthread_mutex_unlock(&mx_jit_queue);
+ }
+ 
+-int compare(const void *a, const void *b, void *arg)
++int compare(const void *a, const void *b)
+ {
+     struct jit_node_s *p = (struct jit_node_s *)a;
+     struct jit_node_s *q = (struct jit_node_s *)b;
+-    int *counter = (int *)arg;
+     int p_count, q_count;
+ 
+     p_count = p->pkt.count_us;
+     q_count = q->pkt.count_us;
+ 
+-    if (p_count > q_count)
+-        *counter = *counter + 1;
+-
+     return p_count - q_count;
  }
  
  void jit_sort_queue(struct jit_queue_s *queue) {
