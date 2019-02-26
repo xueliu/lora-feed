@@ -11,12 +11,15 @@ PKG_NAME:=packet-forwarder
 PKG_VERSION:=4.0.1
 PKG_RELEASE:=1
 
+PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/packet_forwarder/tar.gz/v$(PKG_VERSION)?
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_HASH:=e68fadf6f1d2e5e7b601e504d5efb48b0a8f374c2c29c0476ab2fe9db68d33ae
+PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
+PKG_LICENSE_FILES:=LICENSE
 PKG_BUILD_DIR:=$(BUILD_DIR)/packet_forwarder-$(PKG_VERSION)
-PKG_SOURCE:=v$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/Lora-net/packet_forwarder/archive/
-PKG_MD5SUM:=a1f942e0cc7b02d604b11c8cb5f2a029
 
 include $(INCLUDE_DIR)/package.mk
+include $(INCLUDE_DIR)/cmake.mk
 
 define Package/packet-forwarder/Default
   TITLE:=Semtech packet-forwarder program
@@ -28,7 +31,7 @@ $(call Package/packet-forwarder/Default)
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  DEPENDS:=@libloragw +kmod-spi-dev +libubox-lua +libuci-lua
+  DEPENDS:=+libloragw +libubox-lua +libuci-lua
 endef
 
 define Package/packet-forwarder/description
@@ -42,13 +45,7 @@ define Package/packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora pakcet forwarder
-  DEPENDS:=@libloragw @packet-forwarder
-endef
-
-CFLAGS += $(FPIC) -O2 -Wall -Wextra -std=c99 -Iinc -I. -lm
-
-define Build/Compile
-	$(MAKE) CC=$(TARGET_CC) LGW_PATH=$(BUILD_DIR)/lora_gateway-5.0.1/libloragw -C $(PKG_BUILD_DIR)
+  DEPENDS:=+libloragw @packet-forwarder
 endef
 
 define Package/packet-forwarder/install
@@ -65,9 +62,9 @@ endef
 
 define Package/packet-forwarder-utils/install
 	$(INSTALL_DIR) $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_ack/util_ack $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_sink/util_sink $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/util_tx_test/util_tx_test $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_ack $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_sink $(1)/root/packet_forwarder
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_tx_test $(1)/root/packet_forwarder
 endef
 
 $(eval $(call BuildPackage,packet-forwarder))
