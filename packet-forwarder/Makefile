@@ -31,7 +31,7 @@ $(call Package/packet-forwarder/Default)
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  DEPENDS:=+libloragw +libubox-lua +libuci-lua
+  DEPENDS:=@libloragw +libubox-lua +libuci-lua
 endef
 
 define Package/packet-forwarder/description
@@ -45,7 +45,7 @@ define Package/packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora pakcet forwarder
-  DEPENDS:=+libloragw @packet-forwarder
+  DEPENDS:=@libloragw @packet-forwarder
 endef
 
 define Package/packet-forwarder/install
