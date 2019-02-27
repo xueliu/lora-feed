@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=packet-forwarder
+PKG_NAME:=lora-packet-forwarder
 PKG_VERSION:=4.0.1
 PKG_RELEASE:=1
 
@@ -21,34 +21,29 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/packet_forwarder-$(PKG_VERSION)
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/packet-forwarder/Default
-  TITLE:=Semtech packet-forwarder program
-  URL:=https://github.com/Lora-net/packet_forwarder
-endef
-
-define Package/packet-forwarder
-$(call Package/packet-forwarder/Default)
+define Package/lora-packet-forwarder
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
+  TITLE:=Semtech packet-forwarder program
   DEPENDS:=@libloragw +libubox-lua +libuci-lua
 endef
 
-define Package/packet-forwarder/description
+define Package/lora-packet-forwarder/description
   A LoRa packet forwarder is a program running on the host of a LoRa gateway
   that forwards RF packets receive by the concentrator to a server through a
   IP/UDP link, and emits RF packets that are sent by the server.
 endef
 
-define Package/packet-forwarder-utils
+define Package/lora-packet-forwarder-utils
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora pakcet forwarder
-  DEPENDS:=@libloragw @packet-forwarder
+  DEPENDS:=@libloragw
 endef
 
-define Package/packet-forwarder/install
+define Package/lora-packet-forwarder/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/lora_pkt_fwd $(1)/usr/sbin
 	$(INSTALL_BIN) ./files/gen_lora_global_conf $(1)/usr/sbin
@@ -60,12 +55,12 @@ define Package/packet-forwarder/install
 	$(INSTALL_BIN) ./files/JSON.lua $(1)/usr/lib/lua/JSON.lua
 endef
 
-define Package/packet-forwarder-utils/install
+define Package/lora-packet-forwarder-utils/install
 	$(INSTALL_DIR) $(1)/root/packet_forwarder
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_ack $(1)/root/packet_forwarder
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_sink $(1)/root/packet_forwarder
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_tx_test $(1)/root/packet_forwarder
 endef
 
-$(eval $(call BuildPackage,packet-forwarder))
-$(eval $(call BuildPackage,packet-forwarder-utils))
+$(eval $(call BuildPackage,lora-packet-forwarder))
+$(eval $(call BuildPackage,lora-packet-forwarder-utils))
