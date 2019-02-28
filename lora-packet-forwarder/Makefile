@@ -26,7 +26,7 @@ define Package/lora-packet-forwarder
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Semtech packet-forwarder program
-  DEPENDS:=+libloragw +libubox-lua +libuci-lua
+  DEPENDS:=+libloragw +libubox-lua +libuci-lua +dkjson
 endef
 
 define Package/lora-packet-forwarder/description
@@ -51,8 +51,6 @@ define Package/lora-packet-forwarder/install
 	$(INSTALL_BIN) ./files/lora_pkt_fwd.init $(1)/etc/init.d/lora_pkt_fwd
 	$(INSTALL_DIR) $(1)/etc/config
 	$(INSTALL_DATA) ./files/lora-global.config $(1)/etc/config/lora-global
-	$(INSTALL_DIR) $(1)/usr/lib/lua
-	$(INSTALL_BIN) ./files/JSON.lua $(1)/usr/lib/lua/JSON.lua
 endef
 
 define Package/lora-packet-forwarder-utils/install

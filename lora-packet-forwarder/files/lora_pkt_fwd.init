@@ -42,15 +42,15 @@ start_service()
 
 	logger "lora_pkt_fwd: Start"
 
+	config_load lora_pkt_fwd
+
+	generate_global_conf
+
 	local reset_enable=$(uci get lora-global.SX1301_conf.enable_reset_pin)
 	
 	if [ ${reset_enable} == 1 ]; then
 		reset_sx1301_board $(uci get lora-global.SX1301_conf.reset_pin)
 	fi
-
-	generate_global_conf
-
-	config_load lora_pkt_fwd
 
 	procd_open_instance
 	procd_set_param command $PROG
