@@ -43,7 +43,7 @@ define Package/libloragw-tests
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Test programs for libloragw to check functionality
-  DEPENDS:=@libloragw
+  DEPENDS:=+libloragw
 endef
 
 define Package/libloragw-utils
@@ -51,19 +51,21 @@ define Package/libloragw-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utility programs for libloragw
-  DEPENDS:=@libloragw
+  DEPENDS:=+libloragw
 endef
 
 CMAKE_OPTIONS += \
 		-DSPI_DEV_PATH:FILEPATH=$(CONFIG_SX1301_SPI_PATH) \
-		-DSPI_SPEED:STRING=$(CONFIG_SX1301_SPI_SPEED)
+		-DSPI_SPEED:STRING=$(CONFIG_SX1301_SPI_SPEED) \
+		-Dlora_gateway_build_shared_libs=ON
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libloragw
 	$(CP) $(PKG_BUILD_DIR)/libloragw/inc/loragw_* $(1)/usr/include/libloragw
 	$(CP) $(PKG_BUILD_DIR)/libloragw/config.h $(1)/usr/include/libloragw
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.a $(1)/usr/lib/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.0 $(1)/usr/lib/libloragw.so.0
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so $(1)/usr/lib/libloragw.so
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/loragw.pc  $(1)/usr/lib/pkgconfig/
 endef
@@ -71,6 +73,12 @@ endef
 define Package/libloragw-tests/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/usr/sbin
+endef
+
+define Package/libloragw/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.0 $(1)/usr/lib/libloragw.so.0
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so $(1)/usr/lib/libloragw.so
 endef
 
 define Package/libloragw-utils/install

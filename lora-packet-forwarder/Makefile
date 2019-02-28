@@ -26,7 +26,7 @@ define Package/lora-packet-forwarder
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Semtech packet-forwarder program
-  DEPENDS:=@libloragw +libubox-lua +libuci-lua
+  DEPENDS:=+libloragw +libubox-lua +libuci-lua
 endef
 
 define Package/lora-packet-forwarder/description
@@ -40,7 +40,7 @@ define Package/lora-packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora pakcet forwarder
-  DEPENDS:=@libloragw
+  DEPENDS:=+libloragw
 endef
 
 define Package/lora-packet-forwarder/install
