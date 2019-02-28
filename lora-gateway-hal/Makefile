@@ -64,21 +64,20 @@ define Build/InstallDev
 	$(CP) $(PKG_BUILD_DIR)/libloragw/inc/loragw_* $(1)/usr/include/libloragw
 	$(CP) $(PKG_BUILD_DIR)/libloragw/config.h $(1)/usr/include/libloragw
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.0 $(1)/usr/lib/libloragw.so.0
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so $(1)/usr/lib/libloragw.so
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so* $(1)/usr/lib/
+	$(LN) libloragw.so.0 $(1)/usr/lib/libloragw.so
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/loragw.pc  $(1)/usr/lib/pkgconfig/
+endef
+
+define Package/libloragw/install
+	$(INSTALL_DIR) $(1)/usr/lib
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.* $(1)/usr/lib/
 endef
 
 define Package/libloragw-tests/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/usr/sbin
-endef
-
-define Package/libloragw/install
-	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.0 $(1)/usr/lib/libloragw.so.0
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so $(1)/usr/lib/libloragw.so
 endef
 
 define Package/libloragw-utils/install
