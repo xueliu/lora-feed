@@ -1,4 +1,4 @@
-From 457f871a4b6457a0956dd580ce47b56808678049 Mon Sep 17 00:00:00 2001
+From d81627f15600b0a0992f2ad58de2447033f5fb52 Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Sun, 24 Feb 2019 01:04:29 +0100
 Subject: [PATCH 3/3] - add SPI_DEV_PATH and SPI_SPEED to cmake
@@ -41,5 +41,5 @@ index b0782ca..eebaac3 100644
  
  target_sources(${TARGET}
 -- 
-2.17.0
+2.20.1
 

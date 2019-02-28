@@ -1,11 +1,11 @@
-From bd944b13e9aa6f3998d3f431f9ae06828c1b1429 Mon Sep 17 00:00:00 2001
+From c3b15200d637a40f36f02dd294c53cbee8628ea5 Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Thu, 21 Feb 2019 00:27:42 +0100
 Subject: [PATCH 1/3] - add cmake support
 
 Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
 ---
- CMakeLists.txt                    |  70 +++++++++
+ CMakeLists.txt                    |  77 ++++++++++
  cmake/loragw-config.cmake         |   1 +
  libloragw/CMakeLists.txt          | 229 ++++++++++++++++++++++++++++++
  libloragw/loragw.pc.in            |  10 ++
@@ -16,7 +16,7 @@ Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
  util_spi_stress/CMakeLists.txt    |  23 +++
  util_tx_continuous/CMakeLists.txt |  23 +++
  util_tx_test/CMakeLists.txt       |  23 +++
- 11 files changed, 468 insertions(+)
+ 11 files changed, 475 insertions(+)
  create mode 100644 CMakeLists.txt
  create mode 100644 cmake/loragw-config.cmake
  create mode 100644 libloragw/CMakeLists.txt
@@ -31,10 +31,10 @@ Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 new file mode 100644
-index 0000000..deb7239
+index 0000000..b112150
 --- /dev/null
 +++ b/CMakeLists.txt
-@@ -0,0 +1,70 @@
+@@ -0,0 +1,77 @@
 +# -- Minimum required version
 +cmake_minimum_required (VERSION 3.2)
 +
@@ -85,6 +85,13 @@ index 0000000..deb7239
 +  set(lora_gateway_VERSION 0)
 +endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
 +
++# when building, don't use the install RPATH already
++# (but later on when installing)
++SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++if (NOT (${CMAKE_INSTALL_PREFIX} STREQUAL "/usr" ) )
++   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
++endif()
++
 +# -- add the core library
 +add_subdirectory(libloragw)
 +
@@ -107,12 +114,11 @@ index 0000000..deb7239
 +add_subdirectory(util_tx_test)
 diff --git a/cmake/loragw-config.cmake b/cmake/loragw-config.cmake
 new file mode 100644
-index 0000000..e95aa7f
+index 0000000..ee8687b
 --- /dev/null
 +++ b/cmake/loragw-config.cmake
 @@ -0,0 +1 @@
-+include("${CMAKE_CURRENT_LIST_DIR}/libloragw-targets.cmake")
-\ No newline at end of file
++include("${CMAKE_CURRENT_LIST_DIR}/loragw-targets.cmake")
 diff --git a/libloragw/CMakeLists.txt b/libloragw/CMakeLists.txt
 new file mode 100644
 index 0000000..b0782ca
@@ -350,7 +356,7 @@ index 0000000..b0782ca
 +)
 diff --git a/libloragw/loragw.pc.in b/libloragw/loragw.pc.in
 new file mode 100644
-index 0000000..62c79c4
+index 0000000..01bb3cf
 --- /dev/null
 +++ b/libloragw/loragw.pc.in
 @@ -0,0 +1,10 @@
@@ -359,9 +365,9 @@ index 0000000..62c79c4
 +includedir=${prefix}/include/libloragw
 +libdir=${prefix}/lib
 +
-+Name: LIBLORAGW 
++Name: LIBLORAGW
 +Description: BLANK_TEXT
-+Version: @libloragw_VERSION@
++Version: @lora_gateway_VERSION@
 +Cflags: -I${includedir}
 +Libs: -L${libdir} -lloragw
 diff --git a/libloragw/loragw_config.h.in b/libloragw/loragw_config.h.in
@@ -565,5 +571,5 @@ index 0000000..6cc0e04
 +	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 +)
 -- 
-2.17.0
+2.20.1
 
