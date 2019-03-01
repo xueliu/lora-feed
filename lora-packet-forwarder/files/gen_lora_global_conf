@@ -57,21 +57,21 @@ end
 --
 for key, val in pairs(lora_global_table) do
 	if string.match(key, 'tx_lut_[%d]?', 1) then
-    local tx_lut = {}
+    	local tx_lut = {}
 		for k, v in pairs(val) do
 			if string.match(k, '%.[%a]*', 1) == nil then
         if tonumber(v) then
-          tx_lut[k] = tonumber(v)
+        	tx_lut[k] = tonumber(v)
         elseif v == "true" then
-          tx_lut[k] = true
+        	tx_lut[k] = true
         elseif v == "false" then
-          tx_lut[k] = false
+        	tx_lut[k] = false
         else
-          tx_lut[k] = v
+        	tx_lut[k] = v
         end
 			end
 		end
-    sx1301_conf[key] = tx_lut
+    	sx1301_conf[key] = tx_lut
 	end
 end
 
@@ -81,13 +81,13 @@ end
 if lora_global_table["radio_0"] then
 	for k, v in pairs(lora_global_table["radio_0"]) do
 		if string.match(k, '%.[%a]*', 1) == nil then
-      if tonumber(v) then
+    		if tonumber(v) then
 				radio_0[k] = tonumber(v)
 			elseif v == "true" then
-        radio_0[k] = true
-      elseif v == "false" then
-        radio_0[k] = false
-      else
+    			radio_0[k] = true
+    		elseif v == "false" then
+				radio_0[k] = false
+			else
 				radio_0[k] = v
 			end
 		end
@@ -102,13 +102,13 @@ end
 if lora_global_table["radio_1"] then
 	for k, v in pairs(lora_global_table["radio_1"]) do
 		if string.match(k, '%.[%a]*', 1) == nil then
-      if tonumber(v) then
+    		if tonumber(v) then
 				radio_1[k] = tonumber(v)
 			elseif v == "true" then
-        radio_1[k] = true
-      elseif v == "false" then
-        radio_1[k] = false
-      else
+        		radio_1[k] = true
+    		elseif v == "false" then
+    			radio_1[k] = false
+    		else
 				radio_1[k] = v
 			end
 		end
@@ -148,10 +148,10 @@ if lora_global_table["SX1301_conf"] then
 			if tonumber(v) then
 				sx1301_conf[k] = tonumber(v)
 			elseif v == "true" then
-        sx1301_conf[k] = true
-      elseif v == "false" then
-        sx1301_conf[k] = false
-      else
+				sx1301_conf[k] = true
+    		elseif v == "false" then
+    			sx1301_conf[k] = false
+			else
 				sx1301_conf[k] = v
 			end
 		end
