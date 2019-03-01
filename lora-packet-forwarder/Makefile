@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2017 OpenWrt.org
+# Copyright (C) 2019 Xue Liu <liuxuenetmail@gmail>
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -54,10 +54,10 @@ define Package/lora-packet-forwarder/install
 endef
 
 define Package/lora-packet-forwarder-utils/install
-	$(INSTALL_DIR) $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_ack $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_sink $(1)/root/packet_forwarder
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_tx_test $(1)/root/packet_forwarder
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_ack $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_sink $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_tx_test $(1)/usr/sbin
 endef
 
 $(eval $(call BuildPackage,lora-packet-forwarder))
