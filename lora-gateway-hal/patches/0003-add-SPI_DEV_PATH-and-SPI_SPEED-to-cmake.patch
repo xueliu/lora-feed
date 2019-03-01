@@ -1,4 +1,4 @@
-From d81627f15600b0a0992f2ad58de2447033f5fb52 Mon Sep 17 00:00:00 2001
+From 81cd227c04ccb615cffaaa7b6372affb7964df2e Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Sun, 24 Feb 2019 01:04:29 +0100
 Subject: [PATCH 3/3] - add SPI_DEV_PATH and SPI_SPEED to cmake
@@ -9,7 +9,7 @@ Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/libloragw/CMakeLists.txt b/libloragw/CMakeLists.txt
-index b0782ca..eebaac3 100644
+index b2102ae..32abf51 100644
 --- a/libloragw/CMakeLists.txt
 +++ b/libloragw/CMakeLists.txt
 @@ -13,6 +13,9 @@ option(DEBUG_GPIO "Active debug mode in GPIO module" OFF)

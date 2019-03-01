@@ -1,4 +1,4 @@
-From 85cb8e00ac947323aa94ff9e4ee147afdc39facb Mon Sep 17 00:00:00 2001
+From ea2a7752295ab734464c2877e1f484a9bf08d58d Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Sun, 24 Feb 2019 01:03:48 +0100
 Subject: [PATCH 2/3] - add preprocessing for SPI_DEV_PATH and SPI_SPEED
