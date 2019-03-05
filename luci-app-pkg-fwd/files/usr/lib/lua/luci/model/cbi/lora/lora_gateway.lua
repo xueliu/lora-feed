@@ -8,13 +8,14 @@ gateway.addremove=false
 gateway.anonymous=true
 
 gateway:tab("general",  translate("General Settings"))
+gateway:tab("lbt",  translate("LBT Settings"))
 gateway:tab("forward",  translate("Forward Rules"))
 gateway:tab("gps", translate("GPS Settings"))
 gateway:tab("beacon", translate("Beacon Settings"))
 
 gateway:taboption("general", Value,"gateway_ID",translate("Gateway ID"))
 
-local ttn_addr = gateway:taboption("general", Value,"server_address",translate("TTN Server Address"))
+local ttn_addr = gateway:taboption("general", Value,"server_address",translate("Server Address"))
 ttn_addr:value("router.eu.thethings.network", "ttn-router-eu")
 ttn_addr:value("router.us.thethings.network", "ttn-router-us-west")
 ttn_addr:value("router.cn.thethings.network", "ttn-router-cn")
@@ -64,6 +65,17 @@ forward_crc_disabled.default = false
 forward_crc_disabled.datatype = "bool"
 forward_crc_disabled:value(true, translate("True"))
 forward_crc_disabled:value(false, translate("False"))
+
+--
+-- LBT Enable
+--
+lbt_enable = gateway:taboption("lbt", ListValue,"lbt_enable",translate("LBT Enable"))
+lbt_enable.optional = false;
+lbt_enable.rmempty = false;
+lbt_enable.default = false
+lbt_enable.datatype = "bool"
+lbt_enable:value(true, translate("True"))
+lbt_enable:value(false, translate("False"))
 
 --
 -- GPS Enable
@@ -226,35 +238,6 @@ reset_pin.default = 21
 reset_pin:depends("enable_reset_pin", "1")
 
 --
--- Radio Configuration Mode
---
-mode_select= sx1301:option(ListValue,"mode",translate("Configuration Mode"))
-mode_select.optional = false;
-mode_select.rmempty = false;
-mode_select.default = "simple"
-mode_select.datatype = "string"
-mode_select:value("simple", translate("Simple"))
-mode_select:value("advanced", translate("Advanced"))
-
---
--- Frequency Plan
---
-frequency_plan= sx1301:option(ListValue,"frequency_plan",translate("Frequency Plan"))
-frequency_plan.optional = false;
-frequency_plan.rmempty = true;
-frequency_plan.default = "EU_863_870"
-frequency_plan.datatype = "string"
-frequency_plan:value("EU_863_870",  translate("Europe 868MHz"))
-frequency_plan:value("US_902_928",  translate("United States 915MHz"))
-frequency_plan:value("EU_433",      translate("Europe 433MHz"))
-frequency_plan:value("AU_915_928",  translate("Australia 915MHz"))
-frequency_plan:value("AS_920_923",  translate("Asia 920-923MHz"))
-frequency_plan:value("AS_923_925",  translate("Asia 923-925MHz"))
-frequency_plan:value("KR_920_923",  translate("Korea 920-923MHz"))
-frequency_plan:value("IN_865_867",  translate("India 865-867MHz"))
-frequency_plan:depends("mode", "simple")
-
---
 -- Radio Parameters
 --
 radio=m:section(TypedSection,"radio","Radio Parameters")
@@ -323,7 +306,7 @@ tx_freq_max.rmempty = true;
 tx_freq_max:depends("tx_enable", "true")
 
 --
--- chan_
+-- chann
 --
 chan=m:section(TypedSection,"chan","Channel Parameters")
 chan.addremove=true
@@ -356,7 +339,6 @@ bandwidth.rmempty = false;
 spread_factor = chan:option(Value,"spread_factor",translate("Spread Factor"))
 spread_factor.optional = true;
 spread_factor.rmempty =false;
-
 datarate = chan:option(Value,"datarate",translate("Datarate"))
 datarate.optional = true;
 datarate.rmempty = false;
@@ -390,5 +372,3 @@ m.on_after_commit = function(self)
 end
 
 return m
-
-
