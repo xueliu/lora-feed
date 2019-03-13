@@ -9,12 +9,14 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=basicstation
 PKG_VERSION:=2.0.2
+PKG_REV:=d8362327d39834ec0e1530dc11ebf964572b057f
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL=https://github.com/lorabasics/basicstation.git
-PKG_SOURCE_DATE:=2019-01-30
-PKG_SOURCE_VERSION:=f8417eecd6462c228b2fb1de01dfe1016221b504
+PKG_SOURCE_URL=https://github.com/xueliu/basicstation.git
+PKG_SOURCE_VERSION:=$(PKG_REV)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_REV).tar.gz
+
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail>
 PKG_LICENSE:=BSD
 
@@ -37,7 +39,10 @@ define Package/basicstation/description
 endef
 
 define Build/Compile
-	$(MAKE) CC=$(TARGET_CC) platform=rpi variant=std -C $(PKG_BUILD_DIR)
+	$(MAKE) CC=$(TARGET_CC) \
+			-C $(PKG_BUILD_DIR) \
+			platform=openwrt \
+			variant=std 
 endef
 
 define Package/basicstation/install
