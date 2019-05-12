@@ -1,4 +1,4 @@
-From 8440035b9ad84c4d9219ab1dcd4b9eeea5cd29d6 Mon Sep 17 00:00:00 2001
+From c3c172d8ef81329fa2f2c836408d6d2ca82f508e Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Fri, 8 Mar 2019 14:49:41 +0100
 Subject: [PATCH 1/1] - add CMake support
@@ -104,7 +104,7 @@ index 0000000..e945bf1
 +add_subdirectory(util_tx_test)
 diff --git a/lora_pkt_fwd/CMakeLists.txt b/lora_pkt_fwd/CMakeLists.txt
 new file mode 100644
-index 0000000..35981de
+index 0000000..4d61fdd
 --- /dev/null
 +++ b/lora_pkt_fwd/CMakeLists.txt
 @@ -0,0 +1,68 @@
@@ -147,15 +147,15 @@ index 0000000..35981de
 +		m
 +)
 +
-+if(PICOGW_FOUND)
++if(LORAGW_FOUND)
 +target_include_directories(${TARGET}
 +	PRIVATE
-+		${PICOGW_INCLUDE_DIRS}
++		${LORAGW_INCLUDE_DIRS}
 +)
 +
 +target_link_libraries(${TARGET}
 +	PRIVATE
-+		${PICOGW_LINK_LIBRARIES}
++		${LORAGW_LINK_LIBRARIES}
 +)
 +endif()
 +

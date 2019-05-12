@@ -16,7 +16,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_HASH:=cc6f15be9b95e9b5c28dae97c96244cff651e303b3991b254ef4dcba3f59f562
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE_FILES:=LICENSE
-PKG_BUILD_DIR:=$(BUILD_DIR)/packet_forwarder-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/picoGW_packet_forwarder-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -41,7 +41,7 @@ define Package/lora-picogw-packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora packet forwarder
-  DEPENDS:=+lora-gateway-hal
+  DEPENDS:=+lora-picogw-hal
 endef
 
 define Package/lora-picogw-packet-forwarder/install
