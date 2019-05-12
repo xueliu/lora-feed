@@ -1,0 +1,527 @@
+From e8e378977acbe7612048eba41cf9bdac8e38008a Mon Sep 17 00:00:00 2001
+From: Xue Liu <liuxuenetmail@gmail.com>
+Date: Thu, 28 Feb 2019 16:31:45 +0100
+Subject: [PATCH 1/1]  add CMake support
+
+Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
+---
+ CMakeLists.txt                    |  77 +++++++++++++
+ cmake/loragw-config.cmake         |   1 +
+ libloragw/CMakeLists.txt          | 183 ++++++++++++++++++++++++++++++
+ libloragw/loragw.pc.in            |  10 ++
+ libloragw/loragw_config.h.in      |  12 ++
+ util_boot/CMakeLists.txt          |  23 ++++
+ util_chip_id/CMakeLists.txt       |  23 ++++
+ util_com_stress/CMakeLists.txt    |  23 ++++
+ util_pkt_logger/CMakeLists.txt    |  29 +++++
+ util_tx_continuous/CMakeLists.txt |  23 ++++
+ util_tx_test/CMakeLists.txt       |  23 ++++
+ 11 files changed, 427 insertions(+)
+ create mode 100644 CMakeLists.txt
+ create mode 100644 cmake/loragw-config.cmake
+ create mode 100644 libloragw/CMakeLists.txt
+ create mode 100644 libloragw/loragw.pc.in
+ create mode 100644 libloragw/loragw_config.h.in
+ create mode 100644 util_boot/CMakeLists.txt
+ create mode 100644 util_chip_id/CMakeLists.txt
+ create mode 100644 util_com_stress/CMakeLists.txt
+ create mode 100644 util_pkt_logger/CMakeLists.txt
+ create mode 100644 util_tx_continuous/CMakeLists.txt
+ create mode 100644 util_tx_test/CMakeLists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..9b491bb
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,77 @@
++# -- Minimum required version
++cmake_minimum_required (VERSION 3.2)
++
++# -- Project name
++project (picogw_hal)
++
++# -- Various includes
++include (CMakePackageConfigHelpers)
++include (GNUInstallDirs)
++#include (CheckFunctionExists)
++
++# -- set c99 standard default
++set(CMAKE_C_STANDARD 99)
++
++# -- options for shared lib (defaults off)
++option(picogw_hal_build_shared_libs "build as a shared library" OFF)
++set(BUILD_SHARED_LIBS ${picogw_hal_build_shared_libs})
++
++# -- Required to build
++set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
++set(THREADS_PREFER_PTHREAD_FLAG TRUE)
++find_package(Threads REQUIRED)
++
++# -- Versioning with git tag
++if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
++  execute_process(
++    COMMAND git describe --tags --always
++    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
++    OUTPUT_VARIABLE "picogw_hal_VERSION"
++    ERROR_QUIET
++    OUTPUT_STRIP_TRAILING_WHITESPACE)
++  if(picogw_hal_VERSION STREQUAL "")
++    set(picogw_hal_VERSION 0)
++  endif(picogw_hal_VERSION STREQUAL "")
++  message( STATUS "Git full version: ${picogw_hal_VERSION}" )
++  execute_process(
++    COMMAND /bin/bash -c "git describe --tags --abbrev=0 | cut --delimiter='v' --fields=2"
++    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
++    OUTPUT_VARIABLE "picogw_hal_VERSION_SHORT"
++    ERROR_QUIET
++    OUTPUT_STRIP_TRAILING_WHITESPACE)
++  if(picogw_hal_VERSION_SHORT STREQUAL "")
++    set(picogw_hal_VERSION_SHORT 0)
++  endif(picogw_hal_VERSION_SHORT STREQUAL "")
++  message( STATUS "Git version: ${picogw_hal_VERSION_SHORT}" )
++else(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
++  set(picogw_hal_VERSION_SHORT 0)
++  set(picogw_hal_VERSION 0)
++endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
++
++# when building, don't use the install RPATH already
++# (but later on when installing)
++SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++if (NOT (${CMAKE_INSTALL_PREFIX} STREQUAL "/usr" ) )
++   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
++endif()
++
++# -- add the core library
++add_subdirectory(libloragw)
++
++# -- add util_boot
++add_subdirectory(util_boot)
++
++# -- add util_chip_id
++add_subdirectory(util_chip_id)
++
++# -- add util_pkt_logger
++add_subdirectory(util_pkt_logger)
++
++# -- add util_com_stress
++add_subdirectory(util_com_stress)
++
++# -- add util_tx_continuous
++add_subdirectory(util_tx_continuous)
++
++# -- add util_tx_test
++add_subdirectory(util_tx_test)
+diff --git a/cmake/loragw-config.cmake b/cmake/loragw-config.cmake
+new file mode 100644
+index 0000000..ee8687b
+--- /dev/null
++++ b/cmake/loragw-config.cmake
+@@ -0,0 +1 @@
++include("${CMAKE_CURRENT_LIST_DIR}/loragw-targets.cmake")
+diff --git a/libloragw/CMakeLists.txt b/libloragw/CMakeLists.txt
+new file mode 100644
+index 0000000..f725a8c
+--- /dev/null
++++ b/libloragw/CMakeLists.txt
+@@ -0,0 +1,183 @@
++set(TARGET loragw)
++
++add_library(${TARGET} "")
++
++# -- add additional debug options
++# Set the DEBUG_* to 1 to activate debug mode in individual modules.
++# Warning: that makes the module *very verbose*, do not use for production
++option(DEBUG_AUX "Active debug mode in AUX module" OFF)
++option(DEBUG_COM "Active debug mode in COM module" OFF)
++option(DEBUG_REG "Active debug mode in REG module" OFF)
++option(DEBUG_MCU "Active debug mode in MCU module" OFF)
++option(DEBUG_HAL "Active debug mode in HAL module" OFF)
++
++message("-- Build with debug AUX: ${DEBUG_AUX}")
++message("-- Build with debug COM: ${DEBUG_COM}")
++message("-- Build with debug REG: ${DEBUG_REG}")
++message("-- Build with debug MCU: ${DEBUG_MCU}")
++message("-- Build with debug HAL: ${DEBUG_HAL}")
++
++# --  add the compile options
++target_compile_options(
++	${TARGET}
++	PRIVATE
++	-Werror
++	-Wall
++	-Wextra
++)
++
++target_sources(${TARGET}
++	PRIVATE
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_aux.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_com.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_com_linux.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_hal.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_mcu.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_radio.c
++		${CMAKE_CURRENT_LIST_DIR}/src/loragw_reg.c
++)
++
++# --  add the public headers
++set (${TARGET}_PUBLIC_HEADERS
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_aux.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_com.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_com_linux.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_hal.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_mcu.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_radio.h
++	${CMAKE_CURRENT_LIST_DIR}/inc/loragw_reg.h
++)
++
++target_include_directories(${TARGET}
++	PRIVATE
++		${CMAKE_CURRENT_LIST_DIR}
++		${CMAKE_CURRENT_LIST_DIR}/inc
++	PUBLIC
++		$<INSTALL_INTERFACE:include>
++		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
++		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>
++)
++
++configure_file(${CMAKE_CURRENT_LIST_DIR}/${TARGET}_config.h.in "${CMAKE_CURRENT_BINARY_DIR}/config.h" @ONLY)
++
++target_link_libraries(${TARGET}
++	PUBLIC
++		Threads::Threads
++		m
++)
++
++set_target_properties(${TARGET} PROPERTIES VERSION ${picogw_hal_VERSION_SHORT})
++set_target_properties(${TARGET} PROPERTIES SOVERSION ${picogw_hal_VERSION_SHORT})
++set_target_properties(${TARGET} PROPERTIES PUBLIC_HEADER "${CMAKE_CURRENT_BINARY_DIR}/config.h;${${TARGET}_PUBLIC_HEADERS}")
++
++# --  add the install targets
++install (TARGETS ${TARGET}
++	EXPORT ${TARGET}_targets
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${TARGET}
++	INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${TARGET}
++)
++
++# -- add pkg config file
++configure_file ("${CMAKE_CURRENT_LIST_DIR}/${TARGET}.pc.in" "${PROJECT_BINARY_DIR}/${TARGET}.pc" @ONLY)
++install (FILES ${PROJECT_BINARY_DIR}/${TARGET}.pc DESTINATION lib/pkgconfig)
++
++# -- write cmake package config file
++write_basic_package_version_file(
++	"${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/${TARGET}-config-version.cmake"
++	VERSION ${picogw_hal_VERSION}
++	COMPATIBILITY AnyNewerVersion
++)
++
++export(EXPORT ${TARGET}_targets
++	FILE "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/${TARGET}-targets.cmake"
++	NAMESPACE Semtech::
++)
++
++configure_file(${PROJECT_SOURCE_DIR}/cmake/${TARGET}-config.cmake
++	"${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/${TARGET}-config.cmake"
++	COPYONLY
++)
++
++set(ConfigPackageLocation lib/cmake/${TARGET})
++
++install(EXPORT ${TARGET}_targets
++	FILE ${TARGET}-targets.cmake
++	NAMESPACE Semtech::
++	DESTINATION ${ConfigPackageLocation}
++)
++
++install(
++	FILES ${PROJECT_SOURCE_DIR}/cmake/${TARGET}-config.cmake "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/${TARGET}-config-version.cmake"
++	DESTINATION ${ConfigPackageLocation}
++	COMPONENT Devel
++)
++
++add_executable(test_loragw_reg "")
++target_sources(test_loragw_reg
++	PRIVATE
++		${CMAKE_CURRENT_LIST_DIR}/tst/test_loragw_reg.c
++)
++
++target_include_directories(test_loragw_reg
++	PRIVATE
++		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
++		$<INSTALL_INTERFACE:include>
++		${CMAKE_CURRENT_LIST_DIR}/inc
++		${CMAKE_CURRENT_BINARY_DIR}
++)
++
++target_link_libraries(test_loragw_reg
++	PRIVATE
++		loragw
++)
++
++add_executable(test_loragw_hal "")
++target_sources(test_loragw_hal
++	PRIVATE
++		${CMAKE_CURRENT_LIST_DIR}/tst/test_loragw_hal.c
++)
++
++target_include_directories(test_loragw_hal
++	PRIVATE
++		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
++		$<INSTALL_INTERFACE:include>
++		${CMAKE_CURRENT_LIST_DIR}/inc
++		${CMAKE_CURRENT_BINARY_DIR}
++)
++
++target_link_libraries(test_loragw_hal
++	PRIVATE
++		loragw
++)
++
++add_executable(test_loragw_cal "")
++target_sources(test_loragw_cal
++	PRIVATE
++		${CMAKE_CURRENT_LIST_DIR}/tst/test_loragw_cal.c
++)
++
++target_include_directories(test_loragw_cal
++	PRIVATE
++		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
++		$<INSTALL_INTERFACE:include>
++		${CMAKE_CURRENT_LIST_DIR}/inc
++		${CMAKE_CURRENT_BINARY_DIR}
++)
++
++target_link_libraries(test_loragw_cal
++	PRIVATE
++		loragw
++)
++
++# add the install targets
++install (
++	TARGETS
++		test_loragw_reg
++		test_loragw_hal
++		test_loragw_cal
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/libloragw/loragw.pc.in b/libloragw/loragw.pc.in
+new file mode 100644
+index 0000000..6ea8611
+--- /dev/null
++++ b/libloragw/loragw.pc.in
+@@ -0,0 +1,10 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}/bin
++includedir=${prefix}/include/libloragw
++libdir=${prefix}/lib
++
++Name: LIBLORAGW
++Description: BLANK_TEXT
++Version: @picogw_hal_VERSION@
++Cflags: -I${includedir}
++Libs: -L${libdir} -lloragw
+diff --git a/libloragw/loragw_config.h.in b/libloragw/loragw_config.h.in
+new file mode 100644
+index 0000000..057aece
+--- /dev/null
++++ b/libloragw/loragw_config.h.in
+@@ -0,0 +1,12 @@
++#ifndef _LORAGW_CONFIGURATION_H
++#define _LORAGW_CONFIGURATION_H
++
++#define LIBLORAGW_VERSION "@picogw_hal_VERSION_SHORT@"
++
++#cmakedefine01 DEBUG_AUX
++#cmakedefine01 DEBUG_COM
++#cmakedefine01 DEBUG_REG
++#cmakedefine01 DEBUG_MCU
++#cmakedefine01 DEBUG_HAL
++
++#endif
+diff --git a/util_boot/CMakeLists.txt b/util_boot/CMakeLists.txt
+new file mode 100644
+index 0000000..7d7e979
+--- /dev/null
++++ b/util_boot/CMakeLists.txt
+@@ -0,0 +1,23 @@
++
++add_executable(util_boot "")
++target_sources(util_boot
++        PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_boot.c
++)
++
++target_link_libraries(util_boot
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_boot PROPERTIES
++        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_boot
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/util_chip_id/CMakeLists.txt b/util_chip_id/CMakeLists.txt
+new file mode 100644
+index 0000000..02b85bf
+--- /dev/null
++++ b/util_chip_id/CMakeLists.txt
+@@ -0,0 +1,23 @@
++
++add_executable(util_chip_id "")
++target_sources(util_chip_id
++        PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_chip_id.c
++)
++
++target_link_libraries(util_chip_id
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_chip_id PROPERTIES
++        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_chip_id
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/util_com_stress/CMakeLists.txt b/util_com_stress/CMakeLists.txt
+new file mode 100644
+index 0000000..ecdabe1
+--- /dev/null
++++ b/util_com_stress/CMakeLists.txt
+@@ -0,0 +1,23 @@
++
++add_executable(util_com_stress "")
++target_sources(util_com_stress
++        PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_com_stress.c
++)
++
++target_link_libraries(util_com_stress
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_com_stress PROPERTIES
++        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_com_stress
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/util_pkt_logger/CMakeLists.txt b/util_pkt_logger/CMakeLists.txt
+new file mode 100644
+index 0000000..82cfc86
+--- /dev/null
++++ b/util_pkt_logger/CMakeLists.txt
+@@ -0,0 +1,29 @@
++
++add_executable(util_pkt_logger "")
++target_sources(util_pkt_logger
++	PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_pkt_logger.c
++        ${CMAKE_CURRENT_LIST_DIR}/src/parson.c
++)
++
++target_include_directories(util_pkt_logger
++	PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/inc
++)
++
++target_link_libraries(util_pkt_logger
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_pkt_logger PROPERTIES
++    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_pkt_logger
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/util_tx_continuous/CMakeLists.txt b/util_tx_continuous/CMakeLists.txt
+new file mode 100644
+index 0000000..97c70e5
+--- /dev/null
++++ b/util_tx_continuous/CMakeLists.txt
+@@ -0,0 +1,23 @@
++
++add_executable(util_tx_continuous "")
++target_sources(util_tx_continuous
++        PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_tx_continuous.c
++)
++
++target_link_libraries(util_tx_continuous
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_tx_continuous PROPERTIES
++        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_tx_continuous
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+diff --git a/util_tx_test/CMakeLists.txt b/util_tx_test/CMakeLists.txt
+new file mode 100644
+index 0000000..6cc0e04
+--- /dev/null
++++ b/util_tx_test/CMakeLists.txt
+@@ -0,0 +1,23 @@
++
++add_executable(util_tx_test "")
++target_sources(util_tx_test
++        PRIVATE
++        ${CMAKE_CURRENT_LIST_DIR}/src/util_tx_test.c
++)
++
++target_link_libraries(util_tx_test
++	PUBLIC
++		loragw
++)
++
++set_target_properties(util_tx_test PROPERTIES
++        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
++)
++
++# add the install targets
++install (
++        TARGETS util_tx_test
++  	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT shlib
++	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++)
+-- 
+2.17.0
+
