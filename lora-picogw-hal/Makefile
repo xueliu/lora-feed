@@ -26,8 +26,7 @@ define Package/lora-picogw-hal
   CATEGORY:=Libraries
   TITLE:=Driver/HAL library for Semtech SX1308 Picocell Gateway
   URL:=https://www.semtech.com/products/wireless-rf/lora-gateways/sx1308
-  DEPENDS:=+kmod-usb-acm
-  CONFLICTS:=lora-gateway-hal
+  DEPENDS:=+kmod-usb-acm @(!PACKAGE_lora-gateway-hal)
 endef
 
 define Package/lora-picogw-hal/description
@@ -53,7 +52,7 @@ define Package/lora-picogw-hal-utils
 endef
 
 CMAKE_OPTIONS += \
-		-Dlora_gateway_build_shared_libs=ON
+		-Dpicogw_hal_build_shared_libs=ON
 
 define Build/InstallDev
 	$(INSTALL_DIR) $(1)/usr/include/libloragw
