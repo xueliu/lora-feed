@@ -1,6 +1,6 @@
-# libloragw configuration
+# lora-gateway-hal configuration
 
-if PACKAGE_libloragw
+if PACKAGE_lora-gateway-hal
 
 config SX1301_SPI_PATH
 	string "SPI Dev Path"
