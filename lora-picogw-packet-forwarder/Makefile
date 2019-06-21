@@ -26,11 +26,11 @@ define Package/lora-picogw-packet-forwarder
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Semtech packet-forwarder program
-  DEPENDS:=+lora-picogw-hal
+  DEPENDS:=+libpicogw
 endef
 
 define Package/lora-picogw-packet-forwarder/description
-  A LoRa packet forwarder is a program running on the host of a LoRa 
+  A LoRa packet forwarder is a program running on the host of a LoRa
   Picocell (USB) gateway that forwards RF packets receive by the
   concentrator to a server through a IP/UDP link, and emits RF packets
   that are sent by the server.
@@ -41,7 +41,7 @@ define Package/lora-picogw-packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora packet forwarder
-  DEPENDS:=+lora-picogw-hal
+  DEPENDS:=+libpicogw
 endef
 
 define Package/lora-picogw-packet-forwarder/install
