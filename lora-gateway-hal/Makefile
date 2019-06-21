@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lora-gateway-hal
 PKG_VERSION:=5.0.1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE_URL:=https://codeload.github.com/Lora-net/lora_gateway/tar.gz/v$(PKG_VERSION)?
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -21,7 +21,7 @@ PKG_BUILD_DIR:=$(BUILD_DIR)/lora_gateway-$(PKG_VERSION)
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/lora-gateway-hal
+define Package/libloragw
   SECTION:=libs
   CATEGORY:=Libraries
   TITLE:=Driver/HAL library for Semtech SX1301
@@ -29,30 +29,29 @@ define Package/lora-gateway-hal
   DEPENDS:=+kmod-spi-dev @(!PACKAGE_lora-picogw-hal)
 endef
 
-define Package/lora-gateway-hal/description
-  Host driver/HAL to build a LoRa Gateway which communicates 
-  through SPI with a concentrator board based on Semtech SX1301 
-  multi-channel modem and SX1257/SX1255 RF transceivers.
+define Package/libloragw/description
+  Driver/HAL library for Semtech SX1301 multi-channel modem and
+  SX1257/SX1255 RF transceivers.
 endef
 
-define Package/lora-gateway-hal/config
+define Package/libloragw/config
 	source "$(SOURCE)/Config.in"
 endef
 
-define Package/lora-gateway-hal-tests
+define Package/libloragw-tests
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=Test programs for lora-gateway-hal to check functionality
-  DEPENDS:=+lora-gateway-hal
+  TITLE:=Test programs for libloragw to check functionality
+  DEPENDS:=+libloragw
 endef
 
-define Package/lora-gateway-hal-utils
+define Package/libloragw-utils
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=Utility programs for lora-gateway-hal
-  DEPENDS:=+lora-gateway-hal
+  TITLE:=Utility programs for libloragw
+  DEPENDS:=+libloragw
 endef
 
 CMAKE_OPTIONS += \
@@ -65,23 +64,23 @@ define Build/InstallDev
 	$(CP) $(PKG_BUILD_DIR)/libloragw/inc/loragw_* $(1)/usr/include/libloragw
 	$(CP) $(PKG_BUILD_DIR)/libloragw/config.h $(1)/usr/include/libloragw
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.so* $(1)/usr/lib/
 	$(LN) libloragw.so.0 $(1)/usr/lib/libloragw.so
 	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
 	$(CP) $(PKG_BUILD_DIR)/loragw.pc  $(1)/usr/lib/pkgconfig/
 endef
 
-define Package/lora-gateway-hal/install
+define Package/libloragw/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.* $(1)/usr/lib/
+	$(CP) $(PKG_BUILD_DIR)/libloragw/libloragw.so.* $(1)/usr/lib/
 endef
 
-define Package/lora-gateway-hal-tests/install
+define Package/libloragw-tests/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/test* $(1)/usr/sbin
 endef
 
-define Package/lora-gateway-hal-utils/install
+define Package/libloragw-utils/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_lbt_test $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_pkt_logger $(1)/usr/sbin
@@ -91,6 +90,6 @@ define Package/lora-gateway-hal-utils/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/util_tx_test $(1)/usr/sbin
 endef
 
-$(eval $(call BuildPackage,lora-gateway-hal))
-$(eval $(call BuildPackage,lora-gateway-hal-tests))
-$(eval $(call BuildPackage,lora-gateway-hal-utils))
+$(eval $(call BuildPackage,libloragw))
+$(eval $(call BuildPackage,libloragw-tests))
+$(eval $(call BuildPackage,libloragw-utils))
