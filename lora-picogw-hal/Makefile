@@ -67,7 +67,7 @@ endef
 
 define Package/libpicogw/install
 	$(INSTALL_DIR) $(1)/usr/lib
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libloragw.so.* $(1)/usr/lib/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/libloragw/libpicogw.so.* $(1)/usr/lib/
 endef
 
 define Package/libpicogw-tests/install

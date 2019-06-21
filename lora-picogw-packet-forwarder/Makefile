@@ -46,7 +46,7 @@ endef
 
 define Package/lora-picogw-packet-forwarder/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/lora_pkt_fwd $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lora_pkt_fwd/pico_pkt_fwd $(1)/usr/sbin
 endef
 
 define Package/lora-picogw-packet-forwarder-utils/install
