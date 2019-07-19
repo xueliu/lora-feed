@@ -19,15 +19,14 @@ Edit your feeds.conf or feed.conf.default and add the following to it:
     # Semtech
     src-git lora https://github.com/xueliu/lora-feed
 
-Update your build environment and install the package:
+Update your build environment and install the packages:
 
     $ scripts/feeds update lora
     $ scripts/feeds install -p lora
     $ make menuconfig
 
-Go to Libraries, select libloragw, input the SPI device path you will use in your dev board;  
-Go to Network --> LoRaWAN, select packet-forwarder and other programs you want;  
-Go to LuCI --> Applications, select luci-app-pkt-fwd;  
+`Network --> LoRaWAN`, select packet-forwarder and other programs you want;  
+`LuCI --> Applications`, select luci-app-pkt-fwd;  
 
 Exit, save and build
 
