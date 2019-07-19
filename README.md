@@ -10,6 +10,7 @@ This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-l
 - [Issues](#issues)
 - [Contribute](#contribute)
 - [License](#license)
+- [Donation](#donation)
 
 ## Install
 
@@ -48,6 +49,10 @@ Found a bug? Please create an issue on GitHub:
     https://github.com/xueliu/lora-feed/issues
 
 Further tests and PR's are welcome and appreciated.
+
+## Donation
+
+In order to fully test of funtions, donations of LoRa gateway board with GPS and Pico gateway are appreciated
 
 ## License
 
