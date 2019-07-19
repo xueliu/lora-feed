@@ -51,7 +51,7 @@ Further tests and PR's are welcome and appreciated.
 
 ## Donation
 
-In order to fully test of funtions, donations of LoRa gateway board with GPS and Pico gateway are appreciated
+In order to fully test of functions, donations of LoRa gateway board with GPS and Pico gateway are appreciated
 
 ## License
 
