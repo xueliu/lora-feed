@@ -1,0 +1,123 @@
+#!/usr/bin/env lua
+
+-- SPDX-License-Identifier: GPL-2.0
+--
+-- Copyright (c) 2019 Xue Liu <liuxuenetmail@gmail.com>
+--
+
+require("uloop")
+require("ubus")
+local json = require("dkjson")
+local uci = require("uci")
+
+x = uci.cursor()
+
+uloop.init()
+
+local conn = ubus.connect()
+if not conn then
+        error("Failed to connect to ubus")
+end
+
+local station_ubus = conn:call( "uci", "get", { config = "station" } )
+
+local station_table = station_ubus["values"]
+
+local station_global = {}
+local sx1301_conf = {}
+local radio_0 = {}
+local radio_1 = {}
+local station_conf = {}
+
+--
+-- radio_0
+--
+if station_table["radio_0"] then
+        for k, v in pairs(station_table["radio_0"]) do
+                if string.match(k, '%.[%a]*', 1) == nil then
+                        if tonumber(v) then
+                                radio_0[k] = tonumber(v)
+                        elseif v == "true" then
+                                radio_0[k] = true
+                        elseif v == "false" then
+                                radio_0[k] = false
+                        else
+                                radio_0[k] = v
+                        end
+                end
+        end
+else
+        error("UCI configuration has no item radio_0, Please check your configuration")
+end
+
+--
+-- radio_1
+--
+if station_table["radio_1"] then
+        for k, v in pairs(station_table["radio_1"]) do
+                if string.match(k, '%.[%a]*', 1) == nil then
+                        if tonumber(v) then
+                                radio_1[k] = tonumber(v)
+                        elseif v == "true" then
+                                radio_1[k] = true
+                        elseif v == "false" then
+                                radio_1[k] = false
+                        else
+                                radio_1[k] = v
+                        end
+                end
+        end
+else
+        error("UCI configuration has no item radio_1, Please check your configuration")
+end
+
+--
+-- SX1301_conf
+--
+if station_table["SX1301_conf"] then
+        for k, v in pairs(station_table["SX1301_conf"]) do
+                if string.match(k, '%.[%a]*', 1) == nil then
+                        if tonumber(v) then
+                                sx1301_conf[k] = tonumber(v)
+                        elseif v == "true" then
+                                sx1301_conf[k] = true
+                        elseif v == "false" then
+                                sx1301_conf[k] = false
+                        else
+                                sx1301_conf[k] = v
+                        end
+                end
+        end
+else
+        error("UCI configuration has no item SX1301_conf, Please check your configuration")
+end
+
+--
+-- station_conf
+if station_table["station_conf"] then
+        for k, v in pairs(station_table["station_conf"]) do
+                if string.match(k, '%.[%a]*', 1) == nil then
+                        if tonumber(v) then
+                                station_conf[k] = tonumber(v)
+                        elseif v == "true" then
+                                station_conf[k] = true
+                        elseif v == "false" then
+                                station_conf[k] = false
+                        else
+                                station_conf[k] = v
+                        end
+                end
+        end
+else
+        error("UCI configuration has no item station_conf, Please check your configuration")
+end
+
+sx1301_conf["radio_0"] = radio_0
+sx1301_conf["radio_1"] = radio_1
+station_global["SX1301_conf"] = sx1301_conf
+station_global["station_conf"] = station_conf
+
+local station_global_text = json.encode(station_global, { indent = true })
+
+print(station_global_text)
+
