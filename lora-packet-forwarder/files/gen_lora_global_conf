@@ -1,9 +1,9 @@
+#!/usr/bin/env lua
+
 -- SPDX-License-Identifier: GPL-2.0
 --
 -- Copyright (c) 2019 Xue Liu <liuxuenetmail@gmail.com>
 --
-
-#!/usr/bin/env lua
 
 require("uloop")
 require("ubus")
