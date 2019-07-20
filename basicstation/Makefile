@@ -43,6 +43,13 @@ endef
 define Package/basicstation/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/basicstation-0 $(1)/usr/sbin/basicstation
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/station.init $(1)/etc/init.d/station
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_DATA) ./files/station.config $(1)/etc/config/station
+	# temporally add a fix configuration file
+	$(INSTALL_DIR) $(1)/etc/station
+	$(INSTALL_DATA) ./files/station.conf $(1)/etc/station/station.conf
 endef
 
 $(eval $(call BuildPackage,basicstation))
