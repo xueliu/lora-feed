@@ -6,20 +6,29 @@ PKG_RELEASE:=1
 
 PKG_SOURCE_URL:=https://codeload.github.com/brocaar/lora-gateway-bridge/tar.gz/v$(PKG_VERSION)?
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+
 PKG_HASH:=ba8684b63a3e4bac62b87dce0dd2b2c258657650d7409a301490aa1973f6dd79
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
+PKG_LICENSE:MIT
 PKG_LICENSE_FILES:=LICENSE
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
+
+PKG_BUILD_DEPENDS:=golang/host
+PKG_BUILD_PARALLEL:=1
+PKG_USE_MIPS16:=0
+
+GO_PKG:=github.com/brocaar/lora-gateway-bridge
 
 include $(INCLUDE_DIR)/package.mk
-
+# golang-package.mk should be relocate regarding the env
+include $(INCLUDE_DIR)/../feeds/packages/lang/golang/golang-package.mk
 
 define Package/lora-gateway-bridge
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=LoRa Gateway Bridge
-  DEPENDS:=+golang +mosquitto-ssl
+  DEPENDS:=$(GO_ARCH_DEPENDS) +mosquitto-ssl
+  PKGARCH:=all
 endef
 
 define Package/lora-gateway-bridge/description
@@ -28,13 +37,12 @@ define Package/lora-gateway-bridge/description
   This project is part of the LoRa Server project.
 endef
 
-define Build/Compile
-	env GOARCH=$(ARCH) GOOS=linux make -C $(PKG_BUILD_DIR) build
-endef
-
 define Package/lora-gateway-bridge/install
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/build/$(PKG_NAME) $(1)/usr/sbin
+	$(call GoPackage/Package/Install/Bin,$(1))
+
+	$(INSTALL_DIR) $(1)/etc/init.d/
+	$(INSTALL_BIN) ./files/lora-gateway-bridge.init $(1)/etc/init.d/lora-gateway-bridge
 endef
 
+$(eval $(call GoBinPackage,lora-gateway-bridge))
 $(eval $(call BuildPackage,lora-gateway-bridge))
