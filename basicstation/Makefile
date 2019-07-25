@@ -43,7 +43,7 @@ endef
 define Package/basicstation/install
 	$(INSTALL_DIR) $(1)/usr/sbin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/basicstation-0 $(1)/usr/sbin/basicstation
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/uci2station $(1)/usr/sbin/uci2station
+	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/station.init $(1)/etc/init.d/station
