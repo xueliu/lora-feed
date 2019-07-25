@@ -17,6 +17,7 @@ PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
 GO_PKG:=github.com/brocaar/lora-gateway-bridge
+GO_PKG_BUILD_PKG:=github.com/brocaar/lora-gateway-bridge/cmd/lora-gateway-bridge
 
 include $(INCLUDE_DIR)/package.mk
 # golang-package.mk should be relocate regarding the env
@@ -36,6 +37,9 @@ define Package/lora-gateway-bridge/description
   protocols into a LoRa Server common protocol (JSON and Protobuf).
   This project is part of the LoRa Server project.
 endef
+
+GO_PKG_LDFLAGS:=-s -w
+GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
 
 define Package/lora-gateway-bridge/install
 	$(call GoPackage/Package/Install/Bin,$(1))
