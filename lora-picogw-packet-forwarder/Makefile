@@ -41,7 +41,7 @@ define Package/lora-picogw-packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora packet forwarder
-  DEPENDS:=+libpicogw
+  DEPENDS:=lora-picogw-packet-forwarder
 endef
 
 define Package/lora-picogw-packet-forwarder/install

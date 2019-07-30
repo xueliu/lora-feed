@@ -1,17 +1,19 @@
-From 2aa3e570a3c325d3080208bfa9f2143080a58aff Mon Sep 17 00:00:00 2001
+From e8145c9726aac1c1251213d2e87a2e2aec34d455 Mon Sep 17 00:00:00 2001
 From: Xue Liu <liuxuenetmail@gmail.com>
 Date: Fri, 8 Mar 2019 14:49:41 +0100
 Subject: [PATCH 1/1] - add CMake support
 
 Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
 ---
- CMakeLists.txt              | 90 +++++++++++++++++++++++++++++++++++++
- lora_pkt_fwd/CMakeLists.txt | 68 ++++++++++++++++++++++++++++
- util_ack/CMakeLists.txt     | 38 ++++++++++++++++
- util_sink/CMakeLists.txt    | 38 ++++++++++++++++
- util_tx_test/CMakeLists.txt | 44 ++++++++++++++++++
- 5 files changed, 278 insertions(+)
+ CMakeLists.txt                 | 90 ++++++++++++++++++++++++++++++++++
+ cmake/Modules/Findpicogw.cmake | 36 ++++++++++++++
+ lora_pkt_fwd/CMakeLists.txt    | 68 +++++++++++++++++++++++++
+ util_ack/CMakeLists.txt        | 38 ++++++++++++++
+ util_sink/CMakeLists.txt       | 38 ++++++++++++++
+ util_tx_test/CMakeLists.txt    | 44 +++++++++++++++++
+ 6 files changed, 314 insertions(+)
  create mode 100644 CMakeLists.txt
+ create mode 100644 cmake/Modules/Findpicogw.cmake
  create mode 100644 lora_pkt_fwd/CMakeLists.txt
  create mode 100644 util_ack/CMakeLists.txt
  create mode 100644 util_sink/CMakeLists.txt
@@ -113,9 +115,51 @@ index 0000000..ab6ff33
 +
 +# -- add the util_tx_test
 +add_subdirectory(util_tx_test)
+diff --git a/cmake/Modules/Findpicogw.cmake b/cmake/Modules/Findpicogw.cmake
+new file mode 100644
+index 0000000..4973c5c
+--- /dev/null
++++ b/cmake/Modules/Findpicogw.cmake
+@@ -0,0 +1,36 @@
++# Find picogw
++#
++# Find the picogw includes and library
++#
++# if you need to add a custom library search path, do it via CMAKE_PREFIX_PATH
++#
++# This module defines
++#  LORAGW_INCLUDE_DIRS, where to find header, etc.
++#  LORAGW_LIBRARIES, the libraries needed to use picogw.
++#  LORAGW_LINK_LIBRARIES, the libraries needed to use picogw.
++#  LORAGW_FOUND, If false, do not try to use picogw.
++
++# only look in default directories
++find_path(
++	PICOGW_INCLUDE_DIR
++	NAMES loragw_hal.h # only one of those head files
++	PATH_SUFFIXES "libpicogw"
++	DOC "picogw include dir"
++)
++
++find_library(
++	PICOGW_LIBRARY
++	NAMES picogw libpicogw
++	DOC "picogw library"
++)
++
++set(PICOGW_INCLUDE_DIRS ${PICOGW_INCLUDE_DIR})
++set(PICOGW_LIBRARIES ${PICOGW_LIBRARY})
++set(PICOGW_LINK_LIBRARIES ${PICOGW_LIBRARY})
++
++# handle the QUIETLY and REQUIRED arguments and set USATCK_FOUND to TRUE
++# if all listed variables are TRUE, hide their existence from configuration view
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(picogw DEFAULT_MSG
++        PICOGW_LIBRARY PICOGW_INCLUDE_DIR )
++mark_as_advanced (PICOGW_INCLUDE_DIR PICOGW_LIBRARY)
 diff --git a/lora_pkt_fwd/CMakeLists.txt b/lora_pkt_fwd/CMakeLists.txt
 new file mode 100644
-index 0000000..8b87188
+index 0000000..c58e306
 --- /dev/null
 +++ b/lora_pkt_fwd/CMakeLists.txt
 @@ -0,0 +1,68 @@
@@ -173,7 +217,7 @@ index 0000000..8b87188
 +
 +target_link_libraries(${TARGET}
 +	PRIVATE
-+		Semtech::loragw
++		Semtech::picogw
 +)
 +endif()
 +
@@ -189,7 +233,7 @@ index 0000000..8b87188
 +)
 diff --git a/util_ack/CMakeLists.txt b/util_ack/CMakeLists.txt
 new file mode 100644
-index 0000000..9ecf075
+index 0000000..95826c2
 --- /dev/null
 +++ b/util_ack/CMakeLists.txt
 @@ -0,0 +1,38 @@
@@ -233,7 +277,7 @@ index 0000000..9ecf075
 +)
 diff --git a/util_sink/CMakeLists.txt b/util_sink/CMakeLists.txt
 new file mode 100644
-index 0000000..f1e01c6
+index 0000000..d7ff0e7
 --- /dev/null
 +++ b/util_sink/CMakeLists.txt
 @@ -0,0 +1,38 @@
@@ -277,7 +321,7 @@ index 0000000..f1e01c6
 +)
 diff --git a/util_tx_test/CMakeLists.txt b/util_tx_test/CMakeLists.txt
 new file mode 100644
-index 0000000..6ef06c1
+index 0000000..3a26925
 --- /dev/null
 +++ b/util_tx_test/CMakeLists.txt
 @@ -0,0 +1,44 @@
