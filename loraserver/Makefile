@@ -38,6 +38,9 @@ define Package/loraserver/description
   and the scheduling of downlink data transmissions.
 endef
 
+GO_PKG_LDFLAGS:=-s -w
+GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
+
 define Build/Prepare
 $(call Build/Prepare/Default)
 	# statics
