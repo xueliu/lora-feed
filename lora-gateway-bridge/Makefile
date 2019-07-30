@@ -46,6 +46,9 @@ define Package/lora-gateway-bridge/install
 
 	$(INSTALL_DIR) $(1)/etc/init.d/
 	$(INSTALL_BIN) ./files/lora-gateway-bridge.init $(1)/etc/init.d/lora-gateway-bridge
+
+	$(INSTALL_DIR) $(1)/etc/lora-gateway-bridge
+	$(INSTALL_DATA) ./files/lora-gateway-bridge.toml $(1)/etc/lora-gateway-bridge/
 endef
 
 $(eval $(call GoBinPackage,lora-gateway-bridge))
