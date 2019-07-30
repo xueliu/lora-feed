@@ -31,5 +31,5 @@ start_service()
 
 stop_service() {
     logger "basicstation: Stop"
-    killall basicstaion 
+    killall basicstation 
 }
