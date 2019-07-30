@@ -33,7 +33,7 @@ Update your build environment and install the packages:
     $ scripts/feeds install -a -p lora
     $ make menuconfig
 
-select programs you want;  
+Most programs are located in `Network -> LoRaWAN`
 
 Exit, save and build
 
