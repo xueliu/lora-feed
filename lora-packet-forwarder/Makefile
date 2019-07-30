@@ -40,7 +40,7 @@ define Package/lora-packet-forwarder-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utilities for lora pakcet forwarder
-  DEPENDS:=+libloragw
+  DEPENDS:=lora-packet-forwarder
 endef
 
 define Package/lora-packet-forwarder/install

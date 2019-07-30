@@ -26,7 +26,7 @@ define Package/libloragw
   CATEGORY:=Libraries
   TITLE:=Driver/HAL library for Semtech SX1301
   URL:=https://www.semtech.com/products/wireless-rf/lora-gateways/sx1301
-  DEPENDS:=+kmod-spi-dev @(!PACKAGE_libpicogw)
+  DEPENDS:=+kmod-spi-dev
 endef
 
 define Package/libloragw/description
@@ -43,7 +43,7 @@ define Package/libloragw-tests
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Test programs for libloragw to check functionality
-  DEPENDS:=+libloragw
+  DEPENDS:=libloragw
 endef
 
 define Package/libloragw-utils
@@ -51,7 +51,7 @@ define Package/libloragw-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utility programs for libloragw
-  DEPENDS:=+libloragw
+  DEPENDS:=libloragw
 endef
 
 CMAKE_OPTIONS += \

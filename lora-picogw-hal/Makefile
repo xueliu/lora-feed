@@ -26,7 +26,7 @@ define Package/libpicogw
   CATEGORY:=Libraries
   TITLE:=Driver/HAL library for Semtech SX1308 Picocell Gateway
   URL:=https://www.semtech.com/products/wireless-rf/lora-gateways/sx1308
-  DEPENDS:=+kmod-usb-acm @(!PACKAGE_libloragw)
+  DEPENDS:=+kmod-usb-acm
 endef
 
 define Package/libpicogw/description
@@ -40,7 +40,7 @@ define Package/libpicogw-tests
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Test programs for libpicogw to check functionality
-  DEPENDS:=+libpicogw
+  DEPENDS:=libpicogw
 endef
 
 define Package/libpicogw-utils
@@ -48,7 +48,7 @@ define Package/libpicogw-utils
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=Utility programs for libpicogw
-  DEPENDS:=+libpicogw
+  DEPENDS:=libpicogw
 endef
 
 CMAKE_OPTIONS += \
