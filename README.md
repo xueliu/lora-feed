@@ -6,11 +6,19 @@ This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-l
 
 ## Table of Contents
 
+- [Prerequisites](#prerequisites)
 - [Install](#install)
-- [Issues](#issues)
 - [Contribute](#contribute)
 - [License](#license)
 - [Donation](#donation)
+
+## Prerequisites
+
+In addition to packages required by [OpenWRT](https://openwrt.org/docs/guide-developer/build-system/install-buildsystem), 
+extra packages should be installed if you want to install the LoRaServer:
+
+    sudo apt install go-bindata
+    sudo apt install nodejs
 
 ## Install
 
@@ -22,11 +30,10 @@ Edit your feeds.conf or feed.conf.default and add the following to it:
 Update your build environment and install the packages:
 
     $ scripts/feeds update lora
-    $ scripts/feeds install -p lora
+    $ scripts/feeds install -a -p lora
     $ make menuconfig
 
-`Network --> LoRaWAN`, select packet-forwarder and other programs you want;  
-`LuCI --> Applications`, select luci-app-pkt-fwd;  
+select programs you want;  
 
 Exit, save and build
 
@@ -36,11 +43,6 @@ Following two packages are only working on Raspberry Pi
  
     $ make package/wiringpi/install
     $ make package/single_chan_pkt_fwd/install
-
-## Issues
-- [x] Reset pin is configurable;
-- [ ] Add predefined parameters for different countries;
-- [ ] Generate global_conf.json with lbt section;
 
 ## Contribute
 
