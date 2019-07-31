@@ -1,6 +1,5 @@
 # lora-feed
-Semtech packages for OpenWRT/LEDE.
-This repository is originated from [this](https://github.com/JiapengLi/OpenWrt-lora)
+Semtech and LoRaServer packages for OpenWRT.
 
 ![luci](luci-lora-gateway.png)
 
@@ -53,7 +52,7 @@ Further tests and PR's are welcome and appreciated.
 
 ## Donation
 
-In order to fully test of functions, donations of LoRa gateway board with GPS and Pico gateway are appreciated
+In order to fully test of functions, donations of LoRa gateway boards with GPS and Pico gateways are appreciated
 
 ## License
 
