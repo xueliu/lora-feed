@@ -6,6 +6,7 @@ Semtech and LoRaServer packages for OpenWRT.
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
+- [Attention](#attention)
 - [Install](#install)
 - [Contribute](#contribute)
 - [License](#license)
@@ -18,6 +19,13 @@ extra packages should be installed if you want to install the LoRaServer:
 
     sudo apt install go-bindata
     sudo apt install nodejs
+
+## Attention
+If you want to compile `basicstation` with OpenWRT Version > 18.06, you need to uninstall the `lora-gateway-hal` 
+and install the same one from this feed. Because the official package has no patch for `basicstaion`.
+
+    $ scripts/feeds uninstall lora-gateway-hal
+    $ scripts/feeds install lora-gateway-hal -p lora
 
 ## Install
 
