@@ -1,0 +1,43 @@
+[general]
+# Log level
+#
+# debug=5, info=4, warning=3, error=2, fatal=1, panic=0
+log_level=4
+
+# Geolocation-server configuration.
+[geo_server]
+  # Geolocation API.
+  #
+  # This is the geolocation API that can be used by LoRa Server.
+  [geo_server.api]
+  # ip:port to bind the api server
+  bind="0.0.0.0:8005"
+
+  # CA certificate used by the api server (optional)
+  ca_cert=""
+
+  # TLS certificate used by the api server (optional)
+  tls_cert=""
+
+  # TLS key used by the api server (optional)
+  tls_key=""
+
+
+  # Geolocation backend configuration.
+  [geo_server.backend]
+  # Name.
+  #
+  # The name of the geolocation backend to use.
+  name="collos"
+
+  [geo_server.backend.collos]
+  # Collos subscription key.
+  #
+  # This key can be retrieved after creating a Collos account at:
+  # http://preview.collos.org/
+  subscription_key=""
+
+  # Request timeout.
+  #
+  # This defines the request timeout when making calls to the Collos API.
+  request_timeout="1s"
