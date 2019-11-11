@@ -1,0 +1,15 @@
+Index: basicstation-2.0.3/CMakeLists.txt
+===================================================================
+--- basicstation-2.0.3.orig/CMakeLists.txt
++++ basicstation-2.0.3/CMakeLists.txt
+@@ -187,9 +187,9 @@ if(VARIANT STREQUAL "std")
+ 	target_compile_options(
+ 			${LIB} PUBLIC
+ 			-DCFG_logini_lvl=INFO
+-			-DCFG_tlsdebug
+ 			-DCFG_ral_lgw
+ 			-O3
++			-DCFG_argp
+ 	)
+ endif()
+ 

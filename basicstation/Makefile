@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=basicstation
 PKG_VERSION:=2.0.3
-PKG_REV:=fd10a441879e6e08c331425bba619d647d869a62
+PKG_REV:=8e115bbb1b75c005f67191884888b2fefbfd8ece
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
@@ -40,9 +40,15 @@ define Package/basicstation/description
   LNS (downlinks) through the same secured IP to some device.
 endef
 
+# set binary version
+CMAKE_OPTIONS += -Dbasicstation_VERSION_SHORT=${PKG_VERSION}
+CMAKE_OPTIONS += -Dbasicstation_VERSION=${PKG_VERSION}
+
 define Package/basicstation/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/basicstation-0 $(1)/usr/sbin/basicstation
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station-0 $(1)/usr/sbin/station
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/crc32 $(1)/usr/sbin/crc32
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/genkwcrcs $(1)/usr/sbin/genkwcrcs
 	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station
 
 	$(INSTALL_DIR) $(1)/etc/init.d

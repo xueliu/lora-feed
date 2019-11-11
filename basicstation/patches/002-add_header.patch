@@ -1,0 +1,12 @@
+Index: basicstation-2.0.3/src/aio.c
+===================================================================
+--- basicstation-2.0.3.orig/src/aio.c
++++ basicstation-2.0.3/src/aio.c
+@@ -33,6 +33,7 @@
+ #include <fcntl.h>
+ #include "rt.h"
+ 
++#include <sys/select.h>
+ 
+ enum { N_AIO_HANDLES = 10 };
+ static aio_t aioHandles[N_AIO_HANDLES];
