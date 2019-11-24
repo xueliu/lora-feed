@@ -4,7 +4,7 @@ START=90
 STOP=10
 
 USE_PROCD=1
-PROG=/usr/bin/lora-gateway-bridge
+PROG=/usr/bin/chirpstack-gateway-bridge
 
 start_service() {
     procd_open_instance
