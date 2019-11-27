@@ -1,13 +1,13 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=lora-app-server
-PKG_VERSION:=3.2.0
+PKG_NAME:=chirpstack-application-server
+PKG_VERSION:=3.5.1
 PKG_RELEASE:=1
 
-PKG_SOURCE_URL:=https://codeload.github.com/brocaar/lora-app-server/tar.gz/v$(PKG_VERSION)?
+PKG_SOURCE_URL:=https://codeload.github.com/brocaar/chirpstack-application-server/tar.gz/v$(PKG_VERSION)?
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 
-PKG_HASH:=63eda8e95032e71692b3ccff239ea25a0ea28f493644ebe40bcd05fd2182b89d
+PKG_HASH:=a775aaf0b773efe87b043942d9038a50c3dc96d1a91b2aa8def5487f0aa1c4a5
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE:MIT
 PKG_LICENSE_FILES:=LICENSE
@@ -16,14 +16,14 @@ PKG_BUILD_DEPENDS:=golang/host
 PKG_BUILD_PARALLEL:=1
 PKG_USE_MIPS16:=0
 
-GO_PKG:=github.com/brocaar/lora-app-server
-GO_PKG_BUILD_PKG:=github.com/brocaar/lora-app-server/cmd/lora-app-server
+GO_PKG:=github.com/brocaar/chirpstack-application-server
+GO_PKG_BUILD_PKG:=github.com/brocaar/chirpstack-application-server/cmd/chirpstack-application-server
 
 include $(INCLUDE_DIR)/package.mk
 # golang-package.mk should be relocate regarding the env
 include $(INCLUDE_DIR)/../feeds/packages/lang/golang/golang-package.mk
 
-define Package/lora-app-server
+define Package/chirpstack-application-server
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
@@ -32,8 +32,9 @@ define Package/lora-app-server
   PKGARCH:=all
 endef
 
-define Package/lora-app-server/description
-  LoRa App Server is an open-source LoRaWAN application-server, part of the LoRa Server project.
+define Package/chirpstack-application-server/description
+  ChirpStack Application Server is an open-source LoRaWAN Application Server,
+  part of the ChirpStack open-source LoRaWAN Network Server stack.
   It is responsible for the node "inventory" part of a LoRaWAN infrastructure, handling of 
   received application payloads and the downlink application payload queue.
   It comes with a web-interface and API (RESTful JSON and gRPC) and supports authorization by
@@ -62,12 +63,12 @@ $(call Build/Prepare/Default)
 	@go generate $(PKG_BUILD_DIR)/internal/static/static.go
 endef
 
-define Package/lora-app-server/install
+define Package/chirpstack-application-server/install
 	$(call GoPackage/Package/Install/Bin,$(1))
 
 	$(INSTALL_DIR) $(1)/etc/init.d/
-	$(INSTALL_BIN) ./files/lora-app-server.init $(1)/etc/init.d/lora-app-server
+	$(INSTALL_BIN) ./files/chirpstack-application-server.init $(1)/etc/init.d/chirpstack-application-server
 endef
 
-$(eval $(call GoBinPackage,lora-app-server))
-$(eval $(call BuildPackage,lora-app-server))
+$(eval $(call GoBinPackage,chirpstack-application-server))
+$(eval $(call BuildPackage,chirpstack-application-server))

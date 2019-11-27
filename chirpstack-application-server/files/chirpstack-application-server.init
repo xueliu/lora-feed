@@ -4,7 +4,7 @@ START=90
 STOP=10
 
 USE_PROCD=1
-PROG=/usr/bin/lora-app-server
+PROG=/usr/bin/chirpstack-application-server
 
 start_service() {
     procd_open_instance
