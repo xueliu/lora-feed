@@ -46,11 +46,6 @@ Exit, save and build
 
     $ make -j4
 
-Following two packages are only working on Raspberry Pi
- 
-    $ make package/wiringpi/install
-    $ make package/single_chan_pkt_fwd/install
-
 ## Contribute
 
 Found a bug? Please create an issue on GitHub:
