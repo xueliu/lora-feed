@@ -19,6 +19,7 @@ extra packages should be installed if you want to install the LoRaServer:
 
     sudo apt install go-bindata
     sudo apt install nodejs
+    sudo apt install npm
 
 ## Attention
 If you want to compile `basicstation` with OpenWRT Version > 18.06, you need to uninstall the `lora-gateway-hal` 
