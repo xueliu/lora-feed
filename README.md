@@ -5,12 +5,20 @@ Semtech and LoRaServer packages for OpenWRT.
 
 ## Table of Contents
 
+- [ToDo](#todo)
 - [Prerequisites](#prerequisites)
 - [Attention](#attention)
 - [Install](#install)
 - [Contribute](#contribute)
 - [License](#license)
 - [Donation](#donation)
+
+## ToDo
+- [ ] chirpstack server test
+- [ ] chirpstack toml configuration files
+- [ ] chirpstack toml configuration generation
+- [ ] chirpstack toml configuration with UCI
+- [ ] lorawan-stack build for front-end
 
 ## Prerequisites
 
