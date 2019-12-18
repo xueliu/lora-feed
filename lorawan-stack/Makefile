@@ -48,13 +48,9 @@ endef
 GO_PKG_LDFLAGS:=-s -w
 GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
 
-define Build/Prepare
-$(call Build/Prepare/Default)
+define GoPackage/Build/Compile
 	@echo "make init"
 	@make init -C $(PKG_BUILD_DIR)
-endef
-
-define GoPackage/Build/Compile
 	( \
 		export GOPATH=$(GO_PKG_BUILD_DIR) \
 			GOCACHE=$(GO_PKG_CACHE_DIR) \
@@ -69,8 +65,6 @@ define GoPackage/Build/Compile
 		&& go build ./cmd/ttn-lw-cli \
 		&& echo "Compiling Stack..." \
 		&& go build ./cmd/ttn-lw-stack \
-		&& echo "Compiling Frontend..." \
-		&& ./mage js:build \
 	)
 endef
 
