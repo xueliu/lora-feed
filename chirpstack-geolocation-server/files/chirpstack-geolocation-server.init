@@ -4,7 +4,7 @@ START=90
 STOP=10
 
 USE_PROCD=1
-PROG=/usr/bin/lora-geo-server
+PROG=/usr/bin/chirpstack-geolocation-server
 
 start_service() {
     procd_open_instance
