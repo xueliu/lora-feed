@@ -33,8 +33,8 @@ extra packages should be installed if you want to install the LoRaServer:
 If you want to compile `basicstation` with OpenWRT Version > 18.06, you need to uninstall the `lora-gateway-hal` 
 and install the same one from this feed. Because the official package has no patch for `basicstaion`.
 
-    $ scripts/feeds uninstall lora-gateway-hal
-    $ scripts/feeds install lora-gateway-hal -p lora
+    $ ./scripts/feeds uninstall lora-gateway-hal
+    $ ./scripts/feeds install -p lora lora-gateway-hal
 
 ## Install
 
@@ -45,8 +45,8 @@ Edit your feeds.conf or feed.conf.default and add the following to it:
 
 Update your build environment and install the packages:
 
-    $ scripts/feeds update lora
-    $ scripts/feeds install -a -p lora
+    $ ./scripts/feeds update lora
+    $ ./scripts/feeds install -a -p lora
     $ make menuconfig
 
 Most programs are located in `Network -> LoRaWAN`
