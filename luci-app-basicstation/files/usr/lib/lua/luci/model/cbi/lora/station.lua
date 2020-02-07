@@ -3,11 +3,11 @@ m=Map("station",translate("Basicstation"),translate("Here you can configure the 
 --
 -- SX1301 configuration for SX1301_conf
 --
-sx1301=m:section(TypedSection,"sx1301","SX1301 Parameters")
+local sx1301=m:section(TypedSection,"sx1301","SX1301 Parameters")
 sx1301.addremove=false
 sx1301.anonymous=true
 
-lorawan_pb = sx1301:option(ListValue,"lorawan_public",translate("LoRaWAN is public"))
+local lorawan_pb = sx1301:option(ListValue,"lorawan_public",translate("LoRaWAN is public"))
 lorawan_pb.optional = false;
 lorawan_pb.rmempty = false;
 lorawan_pb.default = false
@@ -15,7 +15,7 @@ lorawan_pb.datatype = "bool"
 lorawan_pb:value(true, translate("True"))
 lorawan_pb:value(false, translate("False"))
 
-clkscr = sx1301:option(ListValue,"clksrc",translate("Clock Source"), "radio_1 provides clock to concentrator for most devices except MultiTech. For MultiTech set to 0.")
+local clkscr = sx1301:option(ListValue,"clksrc",translate("Clock Source"), "radio_1 provides clock to concentrator for most devices except MultiTech. For MultiTech set to 0.")
 clkscr.optional = false;
 clkscr.rmempty = false;
 clkscr.datatype = "integer"
@@ -25,14 +25,14 @@ clkscr:value(0, translate("from radio_0"))
 --
 -- Radio Parameters
 --
-radio=m:section(TypedSection,"radio","Radio Parameters")
+local radio=m:section(TypedSection,"radio","Radio Parameters")
 radio.addremove=false
 radio.anonymous=false
 
 --
 -- Radio enable
 --
-enable = radio:option(ListValue,"enable",translate("Enable"))
+local enable = radio:option(ListValue,"enable",translate("Enable"))
 enable.optional = false;
 enable.rmempty = false;
 enable.default = false
@@ -43,7 +43,7 @@ enable:value(false, translate("False"))
 --
 -- Radio RF frontend
 --
-type = radio:option(ListValue,"type",translate("Type"))
+local type = radio:option(ListValue,"type",translate("Type"))
 type.optional = false;
 type.rmempty = false;
 type.datatype = "string"
@@ -53,21 +53,21 @@ type:value("SX1255", translate("SX1255"))
 --
 -- Radio Frequency
 --
-freq = radio:option(Value,"freq",translate("Frequency"), "Hz")
+local freq = radio:option(Value,"freq",translate("Frequency"), "Hz")
 freq.optional = true;
 freq.rmempty = false;
 
 --
 -- RSSI offset
 -- 
-rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"), "dB")
+local rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"), "dB")
 rssi_offset.optional = false;
 rssi_offset.rmempty = false;
 
 --
 -- Tx Enable
 --
-tx_enable = radio:option(ListValue,"tx_enable",translate("Tx Enable"))
+local tx_enable = radio:option(ListValue,"tx_enable",translate("Tx Enable"))
 tx_enable.optional = false;
 tx_enable.rmempty = false;
 tx_enable.default = false
@@ -78,21 +78,58 @@ tx_enable:value(false, translate("False"))
 --
 -- Station Parameters
 --
-station=m:section(TypedSection,"station","Station Parameters")
+local station=m:section(TypedSection,"station","Station Parameters")
 station.addremove=false
 station.anonymous=false
 
 --
+-- Device
+--
+local device = station:option(Value,"device",translate("SPI Device"))
+device.optional = true;
+device.rmempty = false;
+device:value("spidev0.0", "spidev0.0")
+device:value("spidev0.1", "spidev0.1")
+device:value("spidev?.0", "spidev?.0")
+
+--
+-- Radio Init
+--
+
+local radio_init = station:option(Value,"radio_init",translate("Radio Initlization File"))
+radio_init.optional = true;
+radio_init.rmempty = false;
+
+--
+-- GPS
+--
+local log_level = station:option(ListValue,"gps",translate("GPS"))
+log_level.optional = true;
+log_level.rmempty = false;
+log_level.addremove = true;
+log_level:value("DEVICEFILE", "DEVICEFILE")
+log_level:value("FIFO", "FIFO")
+
+--
+-- PPS
+--
+local log_level = station:option(ListValue,"pps",translate("PPS"), "")
+log_level.optional = true;
+log_level.rmempty = false;
+log_level:value("GPS", "gps")
+log_level:value("Fuzzy", "fuzzy")
+
+--
 -- Log File
 --
-log_file = station:option(Value,"log_file",translate("Log file location"))
+local log_file = station:option(Value,"log_file",translate("Log file location"))
 log_file.optional = false;
 log_file.rmempty = false;
 
 --
 -- Log Level
 --
-log_level = station:option(Value,"log_level",translate("Log Level"))
+local log_level = station:option(ListValue,"log_level",translate("Log Level"))
 log_level.optional = false;
 log_level.rmempty = false;
 log_level:value("DEBUG", "Debug")
@@ -107,14 +144,14 @@ log_level:value("CRITICAL", "Critical")
 --
 -- Log Size
 --
-log_size = station:option(Value,"log_size",translate("Log Size"), "Byte")
+local log_size = station:option(Value,"log_size",translate("Log Size"), "Byte")
 log_size.optional = false;
 log_size.rmempty = false;
 
 --
 -- Log Roteate
 --
-log_rotate = station:option(Value,"log_rotate",translate("Log Rotate"))
+local log_rotate = station:option(Value,"log_rotate",translate("Log Rotate"))
 log_rotate.optional = false;
 log_rotate.rmempty = false;
 
@@ -124,4 +161,3 @@ m.on_after_commit = function(self)
 end
 
 return m
-
