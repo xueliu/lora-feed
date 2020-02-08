@@ -50,6 +50,7 @@ define Package/basicstation/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/crc32 $(1)/usr/sbin/crc32
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/genkwcrcs $(1)/usr/sbin/genkwcrcs
 	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station
+	$(INSTALL_BIN) ./files/reset_sx1301 $(1)/usr/sbin/reset_sx1301
 
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/station.init $(1)/etc/init.d/station

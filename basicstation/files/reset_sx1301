@@ -1,0 +1,35 @@
+#!/bin/sh
+# Copyright (C) 2020 Xue Liu <liuxuenetmail@gmail.com>
+
+. $IPKG_INSTROOT/lib/functions.sh
+
+config_load station
+
+config_get reset_enable SX1301_conf enable_reset_pin
+
+echo "sx1301 reset enable: $reset_enable"
+
+if [ $reset_enable != "1" ]
+then
+    exit
+fi
+
+config_get pin SX1301_conf reset_pin
+
+echo "sx1301 resetpin: $pin"
+
+echo "sx1301 is resetting"
+
+if [ -d "/sys/class/gpio/gpio${pin}" ]
+then
+	echo 1 > /dev/null
+else
+	echo ${pin} > /sys/class/gpio/export
+fi
+
+echo "out" > /sys/class/gpio/gpio${pin}/direction
+echo "1" > /sys/class/gpio/gpio${pin}/value
+echo "0" > /sys/class/gpio/gpio${pin}/value
+echo "in" > /sys/class/gpio/gpio${pin}/direction
+
+echo "sx1301 is reseted"
