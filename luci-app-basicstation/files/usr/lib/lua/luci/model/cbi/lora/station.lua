@@ -125,6 +125,8 @@ log_level:value("Fuzzy", "fuzzy")
 local log_file = station:option(Value,"log_file",translate("Log file location"))
 log_file.optional = false;
 log_file.rmempty = false;
+log_file:value("stderr", "stderr")
+log_file:value("/tmp/stationlog", "/tmp/stationlog")
 
 --
 -- Log Level

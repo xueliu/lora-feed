@@ -1,0 +1,14 @@
+<%#
+Copyright 2020 Xue Liu <liuxuenetmail@gmail.com>
+
+based on https://forum.archive.openwrt.org/viewtopic.php?id=58715
+-%>
+
+<%+header%>
+
+<h2><a id="content" name="content"><%:Basicstation Log%></a></h2>
+<div id="content_syslog">
+<textarea readonly="readonly" wrap="off" rows="<%=stationlog:cmatch("\n")+2%>" id="syslog"><%=stationlog:pcdata()%></textarea>
+</div>
+
+<%+footer%>
