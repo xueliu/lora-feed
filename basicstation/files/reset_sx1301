@@ -32,4 +32,4 @@ echo "1" > /sys/class/gpio/gpio${pin}/value
 echo "0" > /sys/class/gpio/gpio${pin}/value
 echo "in" > /sys/class/gpio/gpio${pin}/direction
 
-echo "sx1301 is reseted"
+echo "sx1301 is resetted"
