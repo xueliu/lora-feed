@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=basicstation
-PKG_VERSION:=2.0.3
-PKG_REV:=8e115bbb1b75c005f67191884888b2fefbfd8ece
+PKG_VERSION:=2.0.5
+PKG_REV:=58741136db6a18c83851684fcbad6c483c1421b3
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
@@ -28,7 +28,10 @@ define Package/basicstation
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=a LoRaWAN Gateway implementation from Semtech
-  DEPENDS:=+libloragw +libmbedtls
+endef
+
+define Package/basicstation/config
+	source "$(SOURCE)/Config.in"
 endef
 
 define Package/basicstation/description
@@ -40,9 +43,10 @@ define Package/basicstation/description
   LNS (downlinks) through the same secured IP to some device.
 endef
 
-# set binary version
-CMAKE_OPTIONS += -Dbasicstation_VERSION_SHORT=${PKG_VERSION}
-CMAKE_OPTIONS += -Dbasicstation_VERSION=${PKG_VERSION}
+# set additional CMake options
+CMAKE_OPTIONS += -Dbasicstation_VERSION_SHORT=$(PKG_VERSION)
+CMAKE_OPTIONS += -Dbasicstation_VERSION=$(PKG_VERSION)
+CMAKE_OPTIONS += -DPLATFORM:STRING=$(CONFIG_GATEWAY_PLATFORM)
 
 define Package/basicstation/install
 	$(INSTALL_DIR) $(1)/usr/sbin

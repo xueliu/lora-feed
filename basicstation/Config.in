@@ -1,0 +1,10 @@
+
+# basicstation gateway platform configuration
+
+if PACKAGE_basicstation
+
+config GATEWAY_PLATFORM
+	string "Gateway Platfrom: linux linuxpico and corecell"
+	default linux
+
+endif
