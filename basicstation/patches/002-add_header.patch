@@ -1,8 +1,8 @@
-Index: basicstation-2.0.3/src/aio.c
+Index: basicstation-2.0.5/src/aio.c
 ===================================================================
---- basicstation-2.0.3.orig/src/aio.c
-+++ basicstation-2.0.3/src/aio.c
-@@ -33,6 +33,7 @@
+--- basicstation-2.0.5.orig/src/aio.c
++++ basicstation-2.0.5/src/aio.c
+@@ -32,6 +32,7 @@
  #include <fcntl.h>
  #include "rt.h"
  

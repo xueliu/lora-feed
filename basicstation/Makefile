@@ -28,6 +28,7 @@ define Package/basicstation
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
   TITLE:=a LoRaWAN Gateway implementation from Semtech
+  DEPENDS:= +libmbedtls
 endef
 
 define Package/basicstation/config

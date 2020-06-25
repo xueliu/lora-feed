@@ -1,0 +1,14 @@
+Index: basicstation-2.0.5/CMakeLists.txt
+===================================================================
+--- basicstation-2.0.5.orig/CMakeLists.txt
++++ basicstation-2.0.5/CMakeLists.txt
+@@ -87,7 +87,8 @@ else()
+ 	add_subdirectory(deps/lgw)
+ endif()
+ 
+-add_subdirectory(deps/mbedtls)
++#add_subdirectory(deps/mbedtls)
++find_package(mbedTLS)
+ 
+ set(LIB s2core)
+ set(APP station)
