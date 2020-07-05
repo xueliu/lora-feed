@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=basicstation
 PKG_VERSION:=2.0.5
-PKG_REV:=58741136db6a18c83851684fcbad6c483c1421b3
+PKG_REV:=9bcdf0e12e4568e96011a3910e6d460ec9384f8c
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
@@ -46,12 +46,12 @@ endef
 
 # set additional CMake options
 CMAKE_OPTIONS += -Dbasicstation_VERSION_SHORT=$(PKG_VERSION)
-CMAKE_OPTIONS += -Dbasicstation_VERSION=$(PKG_VERSION)
+CMAKE_OPTIONS += -Dbasicstation_VERSION_FULL=$(PKG_VERSION)
 CMAKE_OPTIONS += -DPLATFORM:STRING=$(CONFIG_GATEWAY_PLATFORM)
 
 define Package/basicstation/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station-0 $(1)/usr/sbin/station
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station* $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/crc32 $(1)/usr/sbin/crc32
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/genkwcrcs $(1)/usr/sbin/genkwcrcs
 	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station

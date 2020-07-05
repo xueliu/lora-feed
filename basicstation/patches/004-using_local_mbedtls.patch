@@ -2,7 +2,7 @@ Index: basicstation-2.0.5/CMakeLists.txt
 ===================================================================
 --- basicstation-2.0.5.orig/CMakeLists.txt
 +++ basicstation-2.0.5/CMakeLists.txt
-@@ -87,7 +87,8 @@ else()
+@@ -63,7 +63,8 @@ else()
  	add_subdirectory(deps/lgw)
  endif()
  
