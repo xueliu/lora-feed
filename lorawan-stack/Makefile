@@ -1,7 +1,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lorawan-stack
-PKG_VERSION:=3.3.1
+PKG_VERSION:=3.9.0
 PKG_RELEASE:=1
 
 PKG_SOURCE_URL:=https://codeload.github.com/TheThingsNetwork/lorawan-stack/tar.gz/v$(PKG_VERSION)?
@@ -13,7 +13,7 @@ PKG_SOURCE_URL:=https://codeload.github.com/TheThingsNetwork/lorawan-stack/tar.g
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
-PKG_HASH:=68e146ebb41b548fc5098bfd7bac7730b99bb1d6f4b10f13ae23f1d8a93f25ea
+PKG_HASH:=1b8e3c6eca7f838418c8c98cfc538ad42527c419c57aa05d66be7d442fea687b
 PKG_MAINTAINER:=Xue Liu <liuxuenetmail@gmail.com>
 PKG_LICENSE:MIT
 PKG_LICENSE_FILES:=LICENSE
@@ -51,6 +51,11 @@ GO_PKG_LDFLAGS_X:=main.version=$(PKG_VERSION)
 define GoPackage/Build/Compile
 	@echo "make init"
 	@make init -C $(PKG_BUILD_DIR)
+	( \
+		cd $(PKG_BUILD_DIR) \
+		&& echo "build front-end" \
+		&& ./tools/bin/mage js:build \
+	)
 	( \
 		export GOPATH=$(GO_PKG_BUILD_DIR) \
 			GOCACHE=$(GO_PKG_CACHE_DIR) \

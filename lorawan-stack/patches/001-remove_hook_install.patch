@@ -1,8 +1,8 @@
-Index: lorawan-stack-3.3.1/.mage/git.go
+Index: lorawan-stack-3.9.0/tools/mage/git.go
 ===================================================================
---- lorawan-stack-3.3.1.orig/.mage/git.go
-+++ lorawan-stack-3.3.1/.mage/git.go
-@@ -61,7 +61,7 @@ func (g Git) InstallHooks() error {
+--- lorawan-stack-3.9.0.orig/tools/mage/git.go
++++ lorawan-stack-3.9.0/tools/mage/git.go
+@@ -62,7 +62,7 @@ func (g Git) InstallHooks() error {
  }
  
  func init() {
