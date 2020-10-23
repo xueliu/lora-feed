@@ -1,0 +1,11 @@
+{
+	"luci-app-basicstation": {
+		"description": "Grant UCI access for luci-app-basicstation",
+		"read": {
+			"uci": [ "station" ]
+		},
+		"write": {
+			"uci": [ "station" ]
+		}
+	}
+}
