@@ -11,19 +11,21 @@ end
 -- CUPS Bootstrap Configuration
 -- 
 local cups_bootstrap = m:section(NamedSection, "cups_bootstrap", "server", translate("CUPS Bootstrap"))
+cups_bootstrap.addremove  = true
+cups_bootstrap.anonymous = false
 
 --
 -- CUPS Bootstrap URI
 -- 
 local cups_bootstrap_uri = cups_bootstrap:option(Value, "uri", translate("URI"))
-cups_bootstrap_uri.optional = true;
+cups_bootstrap_uri.optional = false;
 cups_bootstrap_uri.rmempty = true;
 
 --
 -- CUPS Bootstrap Port
 -- 
 local cups_bootstrap_port = cups_bootstrap:option(Value, "port", translate("Port"))
-cups_bootstrap_port.optional = true;
+cups_bootstrap_port.optional = false;
 cups_bootstrap_port.rmempty = true;
 
 --
@@ -120,19 +122,21 @@ cups_bootstrap_token:depends("auth_mode","tls-server-token")
 -- CUPS Server Configuration
 -- 
 local cups = m:section(NamedSection, "cups", "server", translate("CUPS Server"))
+cups.addremove = true
+cups.anonymous = false
 
 --
 -- CUPS Server URI
 --
 local cups_uri=cups:option(Value, "uri", translate("URI"))
-cups_uri.optional = true;
+cups_uri.optional = false;
 cups_uri.rmempty = true;
 
 --
 -- CUPS Server Port
 --
 local cups_port=cups:option(Value, "port", translate("Port"))
-cups_port.optional = true;
+cups_port.optional = false;
 cups_port.rmempty = true;
 
 --
@@ -229,19 +233,21 @@ cups_token:depends("auth_mode","tls-server-token")
 -- LNS Server Configuration
 --
 local lns = m:section(NamedSection, "tc", "server", translate("LNS Server"))
+lns.addremove = true
+lns.anonymous = false
 
 --
 -- LNS Server URI
 --
 local lns_uri = lns:option(Value, "uri", translate("URI"))
-lns_uri.optional = true;
+lns_uri.optional = false;
 lns_uri.rmempty = true;
 
 --
 -- LNS Server Port
 --
 local lns_port = lns:option(Value, "port", translate("Port"))
-lns_port.optional = true;
+lns_port.optional = false;
 lns_port.rmempty = true;
 
 --
@@ -339,8 +345,8 @@ lns_token:depends("auth_mode","tls-server-token")
 -- SX1301 configuration for SX1301_conf
 --
 local sx1301=m:section(TypedSection,"sx1301","SX1301 Parameters")
-sx1301.addremove=false
-sx1301.anonymous=true
+sx1301.addremove = true
+sx1301.anonymous = false
 
 local lorawan_pb = sx1301:option(ListValue,"lorawan_public",translate("LoRaWAN is public"))
 lorawan_pb.optional = false;
@@ -361,7 +367,7 @@ clkscr:value(0, translate("from radio_0"))
 -- Radio Parameters
 --
 local radio=m:section(TypedSection,"radio","Radio Parameters")
-radio.addremove=false
+radio.addremove=true
 radio.anonymous=false
 
 --
@@ -396,7 +402,7 @@ freq.rmempty = false;
 -- RSSI offset
 -- 
 local rssi_offset = radio:option(Value,"rssi_offset",translate("RSSI Offset"), "dB")
-rssi_offset.optional = false;
+rssi_offset.optional = true;
 rssi_offset.rmempty = false;
 
 --
@@ -414,7 +420,7 @@ tx_enable:value(false, translate("False"))
 -- Station Parameters
 --
 local station=m:section(TypedSection,"station","Station Parameters")
-station.addremove=false
+station.addremove=true
 station.anonymous=false
 
 --
@@ -438,21 +444,20 @@ radio_init.rmempty = false;
 --
 -- GPS
 --
-local log_level = station:option(ListValue,"gps",translate("GPS"))
-log_level.optional = true;
-log_level.rmempty = true;
-log_level.addremove = true;
-log_level:value("DEVICEFILE", "DEVICEFILE")
-log_level:value("FIFO", "FIFO")
+local gps = station:option(ListValue,"gps",translate("GPS"))
+gps.optional = true;
+gps.rmempty = true;
+gps:value("DEVICEFILE", "DEVICEFILE")
+gps:value("FIFO", "FIFO")
 
 --
 -- PPS
 --
-local log_level = station:option(ListValue,"pps",translate("PPS"), "")
-log_level.optional = true;
-log_level.rmempty = false;
-log_level:value("GPS", "gps")
-log_level:value("Fuzzy", "fuzzy")
+local pps = station:option(ListValue,"pps",translate("PPS"), "")
+pps.optional = true;
+pps.rmempty = false;
+pps:value("GPS", "gps")
+pps:value("Fuzzy", "fuzzy")
 
 --
 -- Log File
@@ -491,10 +496,5 @@ log_size.rmempty = false;
 local log_rotate = station:option(Value,"log_rotate",translate("Log Rotate"))
 log_rotate.optional = false;
 log_rotate.rmempty = false;
-
-m.on_after_commit = function(self)
-
---	io.popen("/etc/init.d/station restart")
-end
 
 return m
