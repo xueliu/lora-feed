@@ -1,0 +1,13 @@
+Index: basicstation-2.0.5/deps/lgw1302/CMakeLists.txt.in
+===================================================================
+--- basicstation-2.0.5.orig/deps/lgw1302/CMakeLists.txt.in
++++ basicstation-2.0.5/deps/lgw1302/CMakeLists.txt.in
+@@ -7,7 +7,7 @@ include(ExternalProject)
+ ExternalProject_Add(
+   lora_gateway
+   GIT_REPOSITORY  "https://github.com/xueliu/sx1302_hal.git"
+-  GIT_TAG         "feature/basicstation"
++  GIT_TAG         "feature/openwrt"
+   UPDATE_COMMAND  ""
+   PATCH_COMMAND   ""
+   SOURCE_DIR      "${CMAKE_CURRENT_BINARY_DIR}/sx1302_hal-src"
