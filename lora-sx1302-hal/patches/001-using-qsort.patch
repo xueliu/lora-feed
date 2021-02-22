@@ -1,0 +1,102 @@
+From 17173223c2284c7379c49a3d3ef580b1fea96b30 Mon Sep 17 00:00:00 2001
+From: Xue Liu <liuxuenetmail@gmail.com>
+Date: Sun, 21 Feb 2021 00:32:59 +0100
+Subject: [PATCH 1/1] - using qsort
+
+Signed-off-by: Xue Liu <liuxuenetmail@gmail.com>
+---
+ packet_forwarder/src/jitqueue.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
+
+Index: lora-sx1302-hal-2.0.1/packet_forwarder/src/jitqueue.c
+===================================================================
+--- lora-sx1302-hal-2.0.1.orig/packet_forwarder/src/jitqueue.c
++++ lora-sx1302-hal-2.0.1/packet_forwarder/src/jitqueue.c
+@@ -15,7 +15,6 @@ License: Revised BSD License, see LICENS
+ /* -------------------------------------------------------------------------- */
+ /* --- DEPENDANCIES --------------------------------------------------------- */
+ 
+-#define _GNU_SOURCE     /* needed for qsort_r to be defined */
+ #include <stdlib.h>     /* qsort_r */
+ #include <stdio.h>      /* printf, fprintf, snprintf, fopen, fputs */
+ #include <string.h>     /* memset, memcpy */
+@@ -88,32 +87,27 @@ void jit_queue_init(struct jit_queue_s *
+     pthread_mutex_unlock(&mx_jit_queue);
+ }
+ 
+-int compare(const void *a, const void *b, void *arg)
++int compare(const void *a, const void *b)
+ {
+     struct jit_node_s *p = (struct jit_node_s *)a;
+     struct jit_node_s *q = (struct jit_node_s *)b;
+-    int *counter = (int *)arg;
+     int p_count, q_count;
+ 
+     p_count = p->pkt.count_us;
+     q_count = q->pkt.count_us;
+ 
+-    if (p_count > q_count)
+-        *counter = *counter + 1;
+-
+     return p_count - q_count;
+ }
+ 
+ void jit_sort_queue(struct jit_queue_s *queue) {
+-    int counter = 0;
+ 
+     if (queue->num_pkt == 0) {
+         return;
+     }
+ 
+     MSG_DEBUG(DEBUG_JIT, "sorting queue in ascending order packet timestamp - queue size:%u\n", queue->num_pkt);
+-    qsort_r(queue->nodes, queue->num_pkt, sizeof(queue->nodes[0]), compare, &counter);
+-    MSG_DEBUG(DEBUG_JIT, "sorting queue done - swapped:%d\n", counter);
++    qsort(queue->nodes, queue->num_pkt, sizeof(queue->nodes[0]), compare);
++    MSG_DEBUG(DEBUG_JIT, "sorting queue done - swapped\n");
+ }
+ 
+ bool jit_collision_test(uint32_t p1_count_us, uint32_t p1_pre_delay, uint32_t p1_post_delay, uint32_t p2_count_us, uint32_t p2_pre_delay, uint32_t p2_post_delay) {
+Index: lora-sx1302-hal-2.0.1/libloragw/src/loragw_hal.c
+===================================================================
+--- lora-sx1302-hal-2.0.1.orig/libloragw/src/loragw_hal.c
++++ lora-sx1302-hal-2.0.1/libloragw/src/loragw_hal.c
+@@ -295,20 +295,15 @@ static int remove_pkt(struct lgw_pkt_rx_
+ 
+ /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+ 
+-int compare_pkt_tmst(const void *a, const void *b, void *arg)
++int compare_pkt_tmst(const void *a, const void *b)
+ {
+     struct lgw_pkt_rx_s *p = (struct lgw_pkt_rx_s *)a;
+     struct lgw_pkt_rx_s *q = (struct lgw_pkt_rx_s *)b;
+-    int *counter = (int *)arg;
+     int p_count, q_count;
+ 
+     p_count = p->count_us;
+     q_count = q->count_us;
+ 
+-    if (p_count > q_count) {
+-        *counter = *counter + 1;
+-    }
+-
+     return (p_count - q_count);
+ }
+ 
+@@ -321,7 +316,6 @@ static int merge_packets(struct lgw_pkt_
+     int pkt_idx;
+ #endif
+     bool dup_restart = false;
+-    int counter_qsort_swap = 0;
+ 
+     /* Check input parameters */
+     CHECK_NULL(p);
+@@ -415,8 +409,7 @@ static int merge_packets(struct lgw_pkt_
+     }
+ 
+     /* Sort the packet array by ascending counter_us value */
+-    qsort_r(p, cpt, sizeof(p[0]), compare_pkt_tmst, &counter_qsort_swap);
+-    DEBUG_PRINTF("%d elements swapped during sorting...\n", counter_qsort_swap);
++    qsort(p, cpt, sizeof(p[0]), compare_pkt_tmst);
+ 
+     /* --------------------------------------------- */
+     /* ---------- For Debug only - START ----------- */
