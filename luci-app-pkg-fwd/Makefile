@@ -19,7 +19,7 @@ define Package/luci-app-pkt-fwd
 	SUBMENU:=3. Applications
 	TITLE:=Semtech LoRa Packet Forward Configuration Interface
 	PKGARCH:=all
-	DEPENDS:=+lora-packet-forwarder
+	DEPENDS:=+lora-packet-forwarder +luci-compat
 endef
 
 define Build/Compile
