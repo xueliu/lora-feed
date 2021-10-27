@@ -19,7 +19,7 @@ define Package/luci-app-basicstation
 	SUBMENU:=3. Applications
 	TITLE:=Semtech Basicstation Configuration Interface
 	PKGARCH:=all
-	DEPENDS:=+basicstation
+	DEPENDS:=+basicstation +luci-compat
 endef
 
 define Build/Compile
