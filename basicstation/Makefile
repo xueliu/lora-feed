@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=basicstation
 PKG_VERSION:=2.0.5
 PKG_REV:=9bcdf0e12e4568e96011a3910e6d460ec9384f8c
-PKG_RELEASE:=1
+PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=https://github.com/xueliu/basicstation.git
