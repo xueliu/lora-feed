@@ -66,7 +66,7 @@ CMAKE_OPTIONS += -DPLATFORM:STRING=$(VARIANT)
 
 define Package/basicstation-linux/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station* $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/crc32 $(1)/usr/sbin/crc32
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/genkwcrcs $(1)/usr/sbin/genkwcrcs
 	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station
