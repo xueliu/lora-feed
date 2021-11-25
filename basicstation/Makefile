@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=basicstation
 PKG_VERSION:=2.0.5
 PKG_REV:=9bcdf0e12e4568e96011a3910e6d460ec9384f8c
-PKG_RELEASE:=1
+PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL=https://github.com/xueliu/basicstation.git
@@ -23,16 +23,31 @@ PKG_LICENSE:=BSD
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/basicstation
+define Package/basicstation-linux
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=a LoRaWAN Gateway implementation from Semtech
+  TITLE:=a LoRaWAN Gateway implementation from Semtech (linux)
   DEPENDS:= +libmbedtls
+  VARIANT:=linux
 endef
 
-define Package/basicstation/config
-	source "$(SOURCE)/Config.in"
+define Package/basicstation-linuxpico
+  SECTION:=net
+  CATEGORY:=Network
+  SUBMENU:=LoRaWAN
+  TITLE:=a LoRaWAN Gateway implementation from Semtech (linuxpico)
+  DEPENDS:= +libmbedtls
+  VARIANT:=linuxpico
+endef
+
+define Package/basicstation-corecell
+  SECTION:=net
+  CATEGORY:=Network
+  SUBMENU:=LoRaWAN
+  TITLE:=a LoRaWAN Gateway implementation from Semtech (corecell)
+  DEPENDS:= +libmbedtls
+  VARIANT:=corecell
 endef
 
 define Package/basicstation/description
@@ -47,11 +62,11 @@ endef
 # set additional CMake options
 CMAKE_OPTIONS += -Dbasicstation_VERSION_SHORT=$(PKG_VERSION)
 CMAKE_OPTIONS += -Dbasicstation_VERSION_FULL=$(PKG_VERSION)
-CMAKE_OPTIONS += -DPLATFORM:STRING=$(CONFIG_GATEWAY_PLATFORM)
+CMAKE_OPTIONS += -DPLATFORM:STRING=$(VARIANT)
 
-define Package/basicstation/install
+define Package/basicstation-linux/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station* $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/station $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/crc32 $(1)/usr/sbin/crc32
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/genkwcrcs $(1)/usr/sbin/genkwcrcs
 	$(INSTALL_BIN) ./files/uci2station $(1)/usr/sbin/uci2station
@@ -68,4 +83,9 @@ define Package/basicstation/install
 	$(INSTALL_DATA) ./files/station.conf $(1)/etc/station/station.conf
 endef
 
-$(eval $(call BuildPackage,basicstation))
+Package/basicstation-linuxpico/install = $(Package/basicstation-linux/install)
+Package/basicstation-corecell/install = $(Package/basicstation-linux/install)
+
+$(eval $(call BuildPackage,basicstation-linux))
+$(eval $(call BuildPackage,basicstation-linuxpico))
+$(eval $(call BuildPackage,basicstation-corecell))
