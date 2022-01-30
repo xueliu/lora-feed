@@ -29,6 +29,7 @@ define Package/basicstation/Default
   SUBMENU:=LoRaWAN
   TITLE:=a LoRaWAN Gateway implementation from Semtech 
   DEPENDS:= +libmbedtls
+  PROVIDES:=basicstation
 endef
 
 define Package/basicstation-linux
