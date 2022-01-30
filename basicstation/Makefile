@@ -23,30 +23,29 @@ PKG_LICENSE:=BSD
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
 
-define Package/basicstation-linux
+define Package/basicstation/Default
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=LoRaWAN
-  TITLE:=a LoRaWAN Gateway implementation from Semtech (linux)
+  TITLE:=a LoRaWAN Gateway implementation from Semtech 
   DEPENDS:= +libmbedtls
+endef
+
+define Package/basicstation-linux
+  $(call Package/basicstation/Default)
+  TITLE+= (linux)
   VARIANT:=linux
 endef
 
 define Package/basicstation-linuxpico
-  SECTION:=net
-  CATEGORY:=Network
-  SUBMENU:=LoRaWAN
-  TITLE:=a LoRaWAN Gateway implementation from Semtech (linuxpico)
-  DEPENDS:= +libmbedtls
+  $(call Package/basicstation/Default)
+  TITLE+= (linuxpico)
   VARIANT:=linuxpico
 endef
 
 define Package/basicstation-corecell
-  SECTION:=net
-  CATEGORY:=Network
-  SUBMENU:=LoRaWAN
-  TITLE:=a LoRaWAN Gateway implementation from Semtech (corecell)
-  DEPENDS:= +libmbedtls
+  $(call Package/basicstation/Default)
+  TITLE+= (corecell)
   VARIANT:=corecell
 endef
 
