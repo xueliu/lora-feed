@@ -4,7 +4,7 @@ STOP=10
 
 USE_PROCD=1
 
-PROG=/usr/sbin/basicstation
+PROG=/usr/sbin/station
 CONFIGFILE=/etc/station/station.conf
 
 start_service()
@@ -31,5 +31,5 @@ start_service()
 
 stop_service() {
     logger "basicstation: Stop"
-    killall basicstation 
+    killall station
 }
